@@ -1,0 +1,39 @@
+body,
+body .semi-always-light {
+    --semi-slpn-0: 48, 65, 6;
+    --semi-slpn-1: 74, 97, 11;
+    --semi-slpn-2: 100, 129, 15;
+    --semi-slpn-3: 128, 162, 21;
+    --semi-slpn-4: 157, 194, 27;
+    --semi-slpn-5: 170, 206, 64;
+    --semi-slpn-6: 186, 218, 106;
+    --semi-slpn-7: 205, 231, 151;
+    --semi-slpn-8: 228, 243, 201;
+    --semi-slpn-9: 243, 249, 232;
+
+    --semi-color-primary: rgba(var(--semi-slpn-5), 1);
+    --semi-color-primary-hover: rgba(var(--semi-slpn-6), 1);
+    --semi-color-primary-active: rgba(var(--semi-slpn-7), 1);
+    --semi-color-primary-disabled: rgba(var(--semi-slpn-2), 1);
+    --semi-color-primary-light-default: rgba(var(--semi-slpn-8), 1);
+    --semi-color-primary-light-hover: rgba(var(--semi-slpn-7), 1);
+    --semi-color-primary-light-active: rgba(var(--semi-slpn-6), 1);
+
+    --semi-color-success: rgba(var(--semi-slpn-5), 1);
+    --semi-color-success-hover: rgba(var(--semi-slpn-6), 1);
+    --semi-color-success-active: rgba(var(--semi-slpn-7), 1);
+    --semi-color-success-disabled: rgba(var(--semi-slpn-2), 1);
+    --semi-color-success-light-default: rgba(var(--semi-slpn-0), 1);
+    --semi-color-success-light-hover: rgba(var(--semi-slpn-1), 1);
+    --semi-color-success-light-active: rgba(var(--semi-slpn-2), 1);
+
+    --semi-color-nav-bg: rgba(var(--semi-slpn-4), 1);
+    --semi-color-focus-border: rgba(var(--semi-slpn-5), 1);
+
+    --demo-box-shadow: inset 0 0 0 1px rgb(34 34 34 / 25%);
+
+    color: #2c3e50;
+    background-color: #f5f5f5;
+
+    --demo-color-selected: #8db10b;
+}

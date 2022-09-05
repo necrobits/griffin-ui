@@ -1,0 +1,32 @@
+.signup-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    margin: 40px auto 0;
+
+    .semi-card {
+        width: 100%;
+        text-align: center;
+
+        .logo {
+            margin: 5px;
+        }
+
+        .title {
+            color: #777;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .hint {
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    }
+}

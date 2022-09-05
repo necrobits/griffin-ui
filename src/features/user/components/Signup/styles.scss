@@ -1,0 +1,27 @@
+.auth-layout-wrapper {
+    .response-text {
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: #666;
+        font-weight: bold;
+    }
+
+    .response-hint {
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .signin-btn {
+        cursor: pointer;
+        margin-left: 4px;
+        text-decoration: none;
+        text-underline-offset: 3px;
+        font-weight: bold;
+        color: #666;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

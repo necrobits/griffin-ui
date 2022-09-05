@@ -1,0 +1,59 @@
+.skeleton {
+    .placeholder {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px;
+        border-bottom: 1px solid var(--semi-color-border);
+
+        .avatar {
+            margin-right: 12px;
+        }
+
+        .title {
+            width: 150px;
+            margin-bottom: 12px;
+            margin-top: 12px;
+        }
+
+        .description {
+            width: 600px;
+        }
+    }
+}
+
+.user {
+    .body {
+        .title-wrapper {
+            .name {
+                font-size: 14px;
+                color: var(--semi-color-text-0);
+                margin-right: 0.5rem;
+                font-weight: 500;
+            }
+
+            .email {
+                font-size: 14px;
+                color: #999;
+                margin-right: 0.5rem;
+            }
+
+            .date-time-wrapper {
+                margin-left: 20px;
+                font-size: 12px;
+
+                .label {
+                    color: #666;
+                }
+
+                .date-time {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .description-wrapper {
+            margin: 5px 0;
+            color: var(--semi-color-text-2);
+        }
+    }
+}

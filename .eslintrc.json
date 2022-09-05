@@ -1,0 +1,45 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "plugins": ["react", "@typescript-eslint", "prettier"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+        // Make sure this is always the last element in the array.,
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {},
+            {
+                "usePrettierrc": true
+            }
+        ],
+        //change airbnb defaults
+        "no-unused-vars": "warn",
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off",
+        "jsx-a11y/accessible-emoji": "off",
+        "react/prop-types": "off",
+        // No jsx extension: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
+        "react/jsx-filename-extension": "off"
+    }
+}

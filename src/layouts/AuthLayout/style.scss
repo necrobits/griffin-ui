@@ -1,0 +1,50 @@
+.auth-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    margin: 40px auto 0;
+
+    .semi-card {
+        width: 100%;
+        text-align: center;
+
+        .hint {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .header-wrapper {
+            .title {
+                color: #777;
+                font-size: 20px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            width: 100%;
+            margin-bottom: 20px;
+            margin-top: 16px;
+        }
+
+        .body {
+            width: calc(100% - 40px);
+            padding: 0 20px 20px;
+
+            .content-wrapper {
+                width: 100%;
+            }
+        }
+
+        .footer {
+            width: calc(100% - 40px);
+            padding: 0 20px 10px;
+
+            .action-wrapper {
+            }
+        }
+    }
+}
