@@ -14,39 +14,6 @@ import Config from './config';
 import { mockApi } from './global/gobits/middlewares/mockApi';
 
 const queryClient = new QueryClient();
-console.log('config', Config);
-
-const mockUsers = {
-    'GET /users': [
-        { id: 1, name: 'ABC' },
-        { id: 2, name: 'BCD' }
-    ],
-    'GET /users/1': {
-        id: 1,
-        name: 'ABC'
-    },
-    'POST /users': {
-        id: 3,
-        name: 'CDE'
-    }
-};
-
-const mockClients = {
-    'GET /clients': [
-        { id: 1, name: 'Client1' },
-        { id: 2, name: 'Client2' }
-    ],
-    'GET /clients/1': {
-        id: 1,
-        name: 'Client1'
-    }
-};
-
-if (Config.isMockingApi) {
-    Go.use(mockApi(Config.serverApi, [mockUsers, mockClients]));
-}
-Go.use(simpleAuth);
-Go.use(handleResponse);
 
 ReactDOM.render(
     <React.StrictMode>

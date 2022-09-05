@@ -2,7 +2,10 @@ import { Gobits, Middleware } from 'gobits';
 import Config from '~/config';
 import _ from 'lodash';
 import { camelToSnakeCase, snakeToCamelCase } from '~/utils';
-
+import { mockApi } from './middlewares/mockApi';
+import mockDataUsers from './mocks/users';
+import mockDataClients from './mocks/clients';
+import { handleResponse, simpleAuth } from './middlewares';
 /**
  * Because the backend API is using snake_case, we need to convert both direction:
  * Frontend <--- Backend: snake_case to camelCase
@@ -47,5 +50,10 @@ const Go = new Gobits({
     defaultOpts: { cache: 'no-store', credentials: 'include' }
 });
 Go.use(caseMapperMiddleware);
+if (Config.isMockingApi) {
+    Go.use(mockApi(Config.serverApi, [mockDataUsers, mockDataClients]));
+}
+Go.use(simpleAuth);
+Go.use(handleResponse);
 
 export default Go;
