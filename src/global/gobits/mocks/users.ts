@@ -1,4 +1,4 @@
-export default  {
+export default {
     'GET /users': [
         { id: 1, name: 'ABC' },
         { id: 2, name: 'BCD' }
