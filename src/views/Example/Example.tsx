@@ -5,7 +5,8 @@ import Go from '~/global/gobits';
 export default function Example() {
     const [res, setRes] = useImmer([]);
     useEffect(() => {
-        Go.get('/users').then(r => setRes(d => {
+        Go.get('/users').then(r =>
+            setRes(d => {
                 d.push(r.body);
             })
         );
