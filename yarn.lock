@@ -413,10 +413,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@necrobits/vite-plugin-semi-theme@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@necrobits/vite-plugin-semi-theme/-/vite-plugin-semi-theme-0.2.2.tgz#132ff015f6961a7f2124b9eab4de89cb631d3209"
-  integrity sha512-1il36OvEIW+cCe0m8OHJiwxAKfOEEOBhaBbbqCrlzokALoAJj17dUHxwg7ZcF5CDYdJSIUfH7BZlF1kOJApHtw==
+"@necrobits/vite-plugin-semi-theme@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@necrobits/vite-plugin-semi-theme/-/vite-plugin-semi-theme-0.3.0.tgz#a05f503724179675168522d9b4287998996769cd"
+  integrity sha512-2mwWCB79NvFegmoPVK4aXlTc05ZseZOtzFQ6/P1kfZvLzfx8FbMMPib8lYGkeZDcuAN9o8NXNTFigb9+tDnd5w==
   dependencies:
     sass "^1.49.8"
 
