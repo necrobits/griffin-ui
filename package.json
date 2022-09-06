@@ -17,7 +17,8 @@
         "lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore",
         "lint:format": "prettier --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,scss,md,json}\" ",
         "lint": "npm run lint:format && npm run lint:fix ",
-        "type-check": "tsc"
+        "type-check": "tsc",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@douyinfe/semi-icons": "^2.18.2",
@@ -57,6 +58,8 @@
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-react": "^7.26.1",
+        "husky": "^8.0.0",
+        "lint-staged": "^13.0.3",
         "pre-commit": "^1.2.2",
         "prettier": "^2.4.1",
         "sass": "^1.43.4",
@@ -67,5 +70,9 @@
     "resolutions": {
         "@types/react": "^17.0.38"
     },
-    "pre-commit": "lint"
+    "lint-staged": {
+        "src/**/*.{ts,css,html}": [
+            "npm run lint"
+        ]
+    }
 }

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Reformatting staged files before committing..."
+npm run lint-staged
+echo "Done."
