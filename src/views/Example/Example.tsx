@@ -5,8 +5,7 @@ import Go from '~/global/gobits';
 export default function Example() {
     const [res, setRes] = useImmer([]);
     useEffect(() => {
-        Go.get('/users').then(r =>
-            setRes(d => {
+        Go.get('/users').then(r => setRes(d => {
                 d.push(r.body);
             })
         );
@@ -32,8 +31,9 @@ export default function Example() {
         );
     }, []);
     return (
-        <h1>
+        <div>
+            <h1>This is a test page</h1>
             <pre>{JSON.stringify(res, null, 2)}</pre>
-        </h1>
+        </div>
     );
 }
