@@ -1,0 +1,13 @@
+.table-users {
+    background-color: white;
+    padding: 0 1rem;
+    border-radius: 20px;
+    border: none;
+}
+
+.semi-table-tbody > .semi-table-row:last-child > .semi-table-row-cell:last-child {
+    border-bottom-right-radius: 20px;
+}
+.semi-table-tbody > .semi-table-row:last-child > .semi-table-row-cell:first-child {
+    border-bottom-left-radius: 20px;
+}
