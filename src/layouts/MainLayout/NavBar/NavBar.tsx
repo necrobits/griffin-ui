@@ -1,25 +1,24 @@
 import React from 'react';
-import { Avatar, Button, Nav } from '@douyinfe/semi-ui';
-import { IconBell, IconHelpCircle, IconHome, IconLive, IconSemiLogo, IconSetting } from '@douyinfe/semi-icons';
+import { Avatar, Button, Dropdown, Input, Nav } from '@douyinfe/semi-ui';
+import { IconBell, IconEdit, IconHelpCircle, IconHome, IconLive, IconQuit, IconSearch, IconSemiLogo, IconSetting } from '@douyinfe/semi-icons';
+import './NavBar.scss';
 
 export default function NavBar() {
     return (
         <Nav
-            style={{
-                position: 'fixed',
-                top: 0,
-                width: '100%',
-                backgroundColor: 'transparent'
-            }}
+            className='navBar'
             mode='horizontal'
-            defaultSelectedKeys={['Home']}>
-            <Nav.Header>
-                <IconSemiLogo style={{ fontSize: 36 }} />
+            defaultSelectedKeys={['Home']}
+        >
+            <Nav.Header className='navBarHeader'>
+                <Input 
+                    prefix={<IconSearch />}
+                    placeholder='Search users ...'
+                    size='large'
+                    showClear
+                />
             </Nav.Header>
-            <Nav.Item itemKey='Home' text='Home' icon={<IconHome size='large' />} />
-            <Nav.Item itemKey='Live' text='Live' icon={<IconLive size='large' />} />
-            <Nav.Item itemKey='Setting' text='Setting' icon={<IconSetting size='large' />} />
-            <Nav.Footer>
+            <Nav.Footer className='navBarFooter'>
                 <Button
                     theme='borderless'
                     icon={<IconBell size='large' />}
@@ -36,9 +35,21 @@ export default function NavBar() {
                         marginRight: '12px'
                     }}
                 />
-                <Avatar color='orange' size='small'>
-                    YJ
-                </Avatar>
+                <Dropdown
+                    trigger='click'
+                    position='bottomRight'
+                    render={
+                        <Dropdown.Menu>
+                            <Dropdown.Item><IconEdit />Edit profile</Dropdown.Item>
+                            <Dropdown.Item><IconSetting />Settings</Dropdown.Item>
+                            <Dropdown.Item style={{ color: 'red' }}><IconQuit />Sign out</Dropdown.Item>
+                        </Dropdown.Menu>
+                    }
+                >
+                    <Avatar color='orange' size='small'>
+                        YJ
+                    </Avatar>
+                </Dropdown>
             </Nav.Footer>
         </Nav>
     );

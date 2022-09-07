@@ -13,7 +13,7 @@ export default defineConfig({
         SemiPlugin({
             theme: '@semi-bot/semi-theme-nyx-c',
             options: {
-                include: resolve(__dirname, 'assets/scss/local.scss')
+                include: resolve(__dirname, 'src/theme/scss/local.scss')
             }
         })
     ],

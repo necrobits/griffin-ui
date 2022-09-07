@@ -8,6 +8,7 @@ export class User {
     fullName?: string;
     avatar?: string;
     createdAt: string;
+    lastOnline: string;
     roles: string[];
 
     static getShortName(firstName: string | undefined, lastname: string | undefined): string {

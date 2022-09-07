@@ -1,0 +1,112 @@
+{
+  "users": [
+    { 
+      "id": 1, 
+      "email": "changedtest1@gmail.com",
+      "firstName": "cShibaaaaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 2, 
+      "email": "atest2@gmail.com",
+      "firstName": "aShiba",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["Admin", "User"]
+    },
+    { 
+      "id": 3, 
+      "email": "dtest3@gmail.com",
+      "firstName": "fShibaaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 4, 
+      "email": "test4@gmail.com",
+      "firstName": "gShibaaaaaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T18:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 5, 
+      "email": "test5@gmail.com",
+      "firstName": "Shibaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 6, 
+      "email": "mtest6@gmail.com",
+      "firstName": "Shib",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T16:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 7, 
+      "email": "ktest1@gmail.com",
+      "firstName": "cShibaaaaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 8, 
+      "email": "atest2@gmail.com",
+      "firstName": "aShiba",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["Admin", "User"]
+    },
+    { 
+      "id": 9, 
+      "email": "dtest3@gmail.com",
+      "firstName": "fShibaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-05-15T19:02:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 10, 
+      "email": "test4@gmail.com",
+      "firstName": "gShibaaaaaaaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 11, 
+      "email": "test5@gmail.com",
+      "firstName": "Shibaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-01-15T09:45:00Z",
+      "roles": ["User"]
+    },
+    { 
+      "id": 12, 
+      "email": "mtest6@gmail.com",
+      "firstName": "Shib",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "roles": ["User"]
+    }
+  ]
+}

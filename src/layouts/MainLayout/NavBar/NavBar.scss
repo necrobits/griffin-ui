@@ -1,0 +1,14 @@
+.navBar {
+  width: 100%;
+  height: 80px;
+  background-color: white;
+
+  .navBarHeader {
+    width: 100%;
+  }
+}
+
+.semi-navigation-header-list-outer {
+  flex-grow: 1;
+  max-width: 600px;
+}
