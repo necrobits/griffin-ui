@@ -10,6 +10,7 @@ export class User {
     createdAt: string;
     lastOnline: string;
     roles: string[];
+    phone: string;
 
     static getShortName(firstName: string | undefined, lastname: string | undefined): string {
         if (!firstName || !lastname) return '';

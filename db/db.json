@@ -2,13 +2,15 @@
   "users": [
     {
       "id": 5,
-      "email": "test2@gmail.com",
+      "email": "averylongemailthatrequiredspace@gmail.com",
       "firstName": "Shibaa",
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
       "roles": [
-        "User"
+        "User",
+        "Admin"
       ]
     },
     {
@@ -18,17 +20,20 @@
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
       "roles": [
-        "User"
+        "User",
+        "Admin"
       ]
     },
     {
       "id": 7,
-      "email": "test7@gmail.com",
+      "email": "averylongemailthatdonthaveenoughspace@gmail.com",
       "firstName": "Shibaa",
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
       "roles": [
         "User"
       ]
@@ -40,6 +45,7 @@
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
       "roles": [
         "User"
       ]
@@ -51,6 +57,7 @@
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
       "roles": [
         "User"
       ]
@@ -62,6 +69,43 @@
       "lastName": "Test",
       "createdAt": "2022-11-08T19:45:00Z",
       "lastOnline": "2022-11-15T19:45:00Z",
+      "phone": "015750888102",
+      "roles": [
+        "User"
+      ]
+    },
+    {
+      "id": 18,
+      "email": "test18@gmail.com",
+      "firstName": "Shibaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
+      "roles": [
+        "User"
+      ]
+    },
+    {
+      "id": 19,
+      "email": "test19@gmail.com",
+      "firstName": "Shibaa",
+      "lastName": "Test",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-01-15T09:45:00Z",
+      "phone": "015750888102",
+      "roles": [
+        "User"
+      ]
+    },
+    {
+      "id": 14,
+      "email": "mtest62@gmail.com",
+      "firstName": "Shiwb",
+      "lastName": "Tesdat",
+      "createdAt": "2022-11-08T19:45:00Z",
+      "lastOnline": "2022-11-15T19:45:00Z",
+      "phone": "015750888102",
       "roles": [
         "User"
       ]
