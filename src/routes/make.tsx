@@ -34,9 +34,9 @@ const makeRoute = (route: IRoute, id: string) => {
             <Route key={`routes-${id}`} {...opts} element={guard}>
                 {route.routes
                     ? makeRoutes(
-                        route.routes.map(r => ({ guard: route.guard, ...r })),
-                        id
-                    )
+                          route.routes.map(r => ({ guard: route.guard, ...r })),
+                          id
+                      )
                     : null}
             </Route>
         );

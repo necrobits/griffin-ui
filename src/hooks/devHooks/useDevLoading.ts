@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 export function useDevLoading() {
-  const [devLoading, setDevLoading] = useState(true);
+    const [devLoading, setDevLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => setDevLoading(false), 500)
-  }, []);
+    useEffect(() => {
+        setTimeout(() => setDevLoading(false), 500);
+    }, []);
 
-  return devLoading;
+    return devLoading;
 }

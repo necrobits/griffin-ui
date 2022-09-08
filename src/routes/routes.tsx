@@ -12,7 +12,7 @@ const Users = lazy(() => import('~/views/Users'));
 const Login = lazy(() => import('~/views/Login'));
 const Signup = lazy(() => import('~/views/Signup'));
 const Example = lazy(() => import('~/views/Example'));
-const UserDetails = lazy(() => import('~/views/UserDetails'))
+const UserDetails = lazy(() => import('~/views/UserDetails'));
 
 export type IRoute = {
     exact?: boolean;
@@ -54,7 +54,7 @@ export const routes: IRoute[] = [
             {
                 path: ':userId',
                 // guard: ProtectedRoute,
-                component: UserDetails,
+                component: UserDetails
             }
         ]
     },

@@ -16,7 +16,7 @@ function transformInfiniteResponse<T>(oldRes: Response<T[]>) {
     const newRes: RequestResponse<T> = {
         total: oldRes.body.length,
         results: oldRes.body
-    }
+    };
     return newRes;
 }
 
@@ -32,11 +32,11 @@ export const fetchUsers = (opts: UsersFetchInput) => {
     return Go.get<User[]>('/users', { query: { ...params } }).then(res => transformInfiniteResponse(res));
 };
 
-export const fetchUser = ({queryKey}) => {
+export const fetchUser = ({ queryKey }) => {
     const [_key, userId] = queryKey;
     return Go.get<User>(`/users/${userId}`).then(res => res.body);
-}
+};
 
 export const deleteUser = (userId: string) => {
     return Go.delete<User>(`/users/${userId}`).then(res => res.body);
-}
+};
