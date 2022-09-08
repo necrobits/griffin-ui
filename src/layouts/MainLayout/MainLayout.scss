@@ -1,0 +1,11 @@
+.content {
+  padding: 2rem;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 640px){
+  .responsive {
+    color: red;
+  } 
+}

@@ -50,17 +50,11 @@ export const routes: IRoute[] = [
             {
                 exact: true,
                 component: Users
-            }
-        ]
-    },
-    {
-        path: 'users/:userId',
-        // guard: ProtectedRoute,
-        component: MainLayout,
-        routes: [
+            },
             {
-                exact: true,
-                component: UserDetails
+                path: ':userId',
+                // guard: ProtectedRoute,
+                component: UserDetails,
             }
         ]
     },

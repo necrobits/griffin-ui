@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from '@douyinfe/semi-ui';
-
+import './MainLayout.scss';
 import ErrorBoundary from '~/containers/ErrorBoundary';
 
 // components
@@ -11,20 +11,15 @@ import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
     const { Header, Sider, Content } = Layout;
     return (
-        <Layout>
-            <Sider>
+        <Layout className='main-layout responsive'>
+            <Sider className='sider'>
                 <Sidebar />
             </Sider>
             <Layout>
                 <Header>
                     <NavBar />
                 </Header>
-                <Content
-                    style={{
-                        padding: '2rem',
-                        height: 'calc(100vh - 80px)',
-                        overflowY: 'scroll'
-                    }}>
+                <Content className='content'>
                     <ErrorBoundary>
                         <Outlet />
                     </ErrorBoundary>

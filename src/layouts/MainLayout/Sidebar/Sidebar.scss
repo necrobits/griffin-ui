@@ -1,13 +1,18 @@
-.navHeader {
-  font-size: 2rem;
-  justify-content: center;
+.sidebar-nav {
+  height: 100vh;
+  padding: 1em;
 
-  h1 {
-    margin: 0;
-    padding: 0;
-  }
-  svg {
+  .navHeader {
     font-size: 2rem;
-    margin-right: 5px;
+    justify-content: center;
+  
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+    svg {
+      font-size: 2rem;
+      margin-right: 5px;
+    }
   }
 }

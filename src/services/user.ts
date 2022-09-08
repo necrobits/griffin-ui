@@ -36,3 +36,7 @@ export const fetchUser = ({queryKey}) => {
     const [_key, userId] = queryKey;
     return Go.get<User>(`/users/${userId}`).then(res => res.body);
 }
+
+export const deleteUser = (userId: string) => {
+    return Go.delete<User>(`/users/${userId}`).then(res => res.body);
+}

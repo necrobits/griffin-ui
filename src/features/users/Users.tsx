@@ -7,17 +7,21 @@ import { IconDelete, IconMore } from '@douyinfe/semi-icons';
 import { User } from '~/models';
 import './Users.scss';
 import { useNavigate } from 'react-router-dom';
-import {useDevLoading} from '~/hooks/devHooks/';
 import { TimeManager } from '~/utils';
+import useDeleteUser from './hooks/useDeleteUser';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 export default function Users() {
     const navigate = useNavigate();
-    const { fetching, error, data } = useFetchUsersInfinite();
+    const { fetching, data } = useFetchUsersInfinite();
+    const {mutate: deleteUser, isLoading} = useDeleteUser();
     const dataSource = data ? getResultsFromInfiniteFetch(data) : [];
-    const devLoading = useDevLoading();
-    console.log(data);
+    const [isTableLoading, setIsTableLoading] = useState(true);
+
+    useEffect(() => {
+        setIsTableLoading(isLoading || fetching)
+    }, [isLoading, fetching])
 
     const columns = [
         {
@@ -27,13 +31,13 @@ export default function Users() {
             width: 300,
             render: (text, record: User, index) => {
                 return (
-                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Avatar size="small" src={record.avatar} style={{ marginRight: 12 }}></Avatar>
                         {/* The width calculation method is the cell setting width minus the non-text content width */}
                         <Text ellipsis={{ showTooltip: true }} style={{ width: 'calc(300px - 76px)' }}>
                             {User.getFullName(record)}
                         </Text>
-                    </span>
+                    </div>
                 );
             }
         },
@@ -74,7 +78,7 @@ export default function Users() {
                         render={
                             (<Dropdown.Menu>
                                 <Dropdown.Item onClick={() => navigate(`/users/${record.id}`)}><IconMore />Details</Dropdown.Item>
-                                <Dropdown.Item style={{ color: 'red' }}><IconDelete />Delete</Dropdown.Item>
+                                <Dropdown.Item style={{ color: 'red' }} onClick={() => handleDelete(`${record.id}`)}><IconDelete />Delete</Dropdown.Item>
                             </Dropdown.Menu>)
                         }
                     >
@@ -85,7 +89,10 @@ export default function Users() {
         },
     ];
 
-    const resetData = () => console.log('Reset users');
+    const handleDelete = (userId: string) => {
+        deleteUser(userId);
+    }
+    
     const empty = (
         <Empty
             image={<IllustrationNoResult />}
@@ -124,7 +131,8 @@ export default function Users() {
 
 
     return (
-        <Skeleton placeholder={placeholder} loading={devLoading}>
+        <Skeleton placeholder={placeholder} loading={isTableLoading}>
+            <Title style={{marginBottom: '2rem'}}>Users</Title>
             <Table className='table-users' columns={columns} dataSource={dataSource} pagination={true} empty={empty} />
         </Skeleton>
         

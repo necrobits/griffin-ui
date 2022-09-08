@@ -5,13 +5,10 @@ import App from '~/App';
 import { store } from '~/global/store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
-import Go from '~/global/gobits';
-import { handleResponse, simpleAuth } from '~/global/gobits/middlewares';
 import { LocaleProvider } from '@douyinfe/semi-ui';
 import { BrowserRouter } from 'react-router-dom';
-import Config from './config';
-import { mockApi } from './global/gobits/middlewares/mockApi';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +20,7 @@ ReactDOM.render(
                     <LocaleProvider locale={en_GB}>
                         <App />
                     </LocaleProvider>
+                    <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
                 </QueryClientProvider>
             </BrowserRouter>
         </Provider>
