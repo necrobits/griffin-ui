@@ -49,6 +49,7 @@ const Go = new Gobits({
     baseUrl: Config.serverApi,
     defaultOpts: { cache: 'no-store', credentials: 'include' }
 });
+
 Go.use(caseMapperMiddleware);
 if (Config.isMockingApi) {
     Go.use(mockApi(Config.serverApi, [mockDataUsers, mockDataClients]));

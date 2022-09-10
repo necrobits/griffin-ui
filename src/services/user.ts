@@ -9,18 +9,8 @@ export interface UsersResponse {
     data: User[];
 }
 
-/* For Dev Mode */
-/* Transform users response from Json-server
- * froom type T[] to ReqeustResponse<T> */
-function transformInfiniteResponse<T>(oldRes: Response<T[]>) {
-    const newRes: RequestResponse<T> = {
-        total: oldRes.body.length,
-        results: oldRes.body
-    };
-    return newRes;
-}
-
-export const fetchUsers = (opts: UsersFetchInput) => {
+export const fetchUsers = ({ queryKey }) => {
+    const [_key, opts] = queryKey;
     const params: any = {};
     if (opts) {
         Object.keys(opts).forEach(key => {
@@ -29,7 +19,9 @@ export const fetchUsers = (opts: UsersFetchInput) => {
             }
         });
     }
-    return Go.get<User[]>('/users', { query: { ...params } }).then(res => transformInfiniteResponse(res));
+    return Go.get<RequestResponse<User>>('/users', { query: { ...params } }).then(res => {
+        return res.body;
+    });
 };
 
 export const fetchUser = ({ queryKey }) => {

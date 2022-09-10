@@ -33,12 +33,13 @@ export function useAutoLoadInfinite<T, Input>(
                 setFetching(false);
             },
             structuralSharing: false,
-            getPreviousPageParam: firstPage => firstPage.previousId ?? undefined,
+            getPreviousPageParam: firstPage => firstPage.pagination.prev ?? undefined,
             getNextPageParam: lastPage => {
-                return lastPage.nextId ?? undefined;
+                return lastPage.pagination.last ?? undefined;
             }
         }
     );
+
     useEffect(() => {
         if (!isFetchingNextPage && hasNextPage != undefined) {
             if (hasNextPage) {
@@ -49,6 +50,5 @@ export function useAutoLoadInfinite<T, Input>(
             }
         }
     }, [isFetchingNextPage, hasNextPage]);
-
     return { fetchNextPage, hasNextPage, isFetchingNextPage, fetching, ...rest };
 }

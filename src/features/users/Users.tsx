@@ -1,41 +1,100 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Empty, Skeleton, Table, Typography } from '@douyinfe/semi-ui';
-import { getResultsFromInfiniteFetch } from '~/hooks';
-import { useFetchUsersInfinite } from '~/features/users/hooks';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Avatar, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
-import { IconDelete, IconMore } from '@douyinfe/semi-icons';
+import { IconDelete, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
 import { User } from '~/models';
 import './Users.scss';
 import { useNavigate } from 'react-router-dom';
 import { TimeManager } from '~/utils';
-import useDeleteUser from './hooks/useDeleteUser';
-import { DEFAULT_PAGINATION_PAGE_SIZE } from '~/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearInput, getChangedInput } from '../search';
+import { SearchDropdown } from '../search/components';
+import UsersSearchDropdown from './components/UsersSearchDropdown/UsersSearchDropdown';
+import { useGetOnlineUsers, useDeleteUser, useFetchUsers } from './hooks';
 
 const { Text, Title } = Typography;
 
+const PAGE_SIZE = 8;
+const TABLE_PROPS = {
+    name: {
+        title: 'Name',
+        dataIndex: 'name',
+        width: 200
+    },
+    email: {
+        title: 'Email',
+        dataIndex: 'email',
+        width: 300
+    },
+    phone: {
+        title: 'Phone number',
+        dataIndex: 'phone',
+        width: 200
+    },
+    roles: {
+        title: 'Roles',
+        dataIndex: 'roles',
+        width: 100
+    },
+    isActive: {
+        title: 'Active',
+        dataIndex: 'isActive',
+        width: 100
+    },
+    lastOnline: {
+        title: 'Last active on',
+        dataIndex: 'lastOnline',
+        width: 200
+    },
+    more: {
+        title: '',
+        dataIndex: 'operate'
+    }
+};
+
 export default function Users() {
     const navigate = useNavigate();
-    const { fetching, error, data } = useFetchUsersInfinite();
-    const { mutate: deleteUser, isLoading } = useDeleteUser();
-    const dataSource = data ? getResultsFromInfiniteFetch(data) : [];
+    const dispatch = useDispatch();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const [dataSource, setDataSource]: [User[], Dispatch<SetStateAction<User[]>>] = useState([]);
     const [isTableLoading, setIsTableLoading] = useState(true);
+    const onlineUsers = useGetOnlineUsers();
+
+    const { data, isLoading: isUsersLoading } = useFetchUsers({ pageSize: PAGE_SIZE, page: currentPage });
+    const { mutate: deleteUser, isLoading: isDeleteLoading } = useDeleteUser();
+
+    const changedInput = useSelector(getChangedInput);
 
     useEffect(() => {
-        setIsTableLoading(isLoading || fetching);
-    }, [isLoading, fetching]);
+        return () => {
+            dispatch(clearInput());
+        };
+    }, []);
+
+    useEffect(() => {
+        setIsTableLoading(isDeleteLoading || isUsersLoading);
+    }, [isDeleteLoading, isUsersLoading]);
+
+    useEffect(() => {
+        if (!isUsersLoading) {
+            setTotal(data.total);
+            setDataSource(data ? data.results : []);
+        }
+    }, [data]);
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            ...TABLE_PROPS.name,
             sorter: (a: User, b: User) => User.getFullName(a).localeCompare(User.getFullName(b)),
-            width: 200,
             render: (text, record: User, index) => {
                 return (
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar size='small' src={record.avatar} style={{ marginRight: 12 }}></Avatar>
-                        {/* The width calculation method is the cell setting width minus the non-text content width */}
-                        <Text ellipsis={{ showTooltip: true }} style={{ width: 'calc(200px - 76px)' }}>
+                    <div className='col-name-record'>
+                        <Avatar size='small' color='lime' src={record.avatar} style={{ marginRight: 12 }}>
+                            {User.getShortName(record.firstName, record.lastName)}
+                        </Avatar>
+                        <Text ellipsis={{ showTooltip: true }} style={{ width: `calc(${TABLE_PROPS.name.width}px - 76px)` }}>
                             {User.getFullName(record)}
                         </Text>
                     </div>
@@ -43,29 +102,29 @@ export default function Users() {
             }
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            width: 350,
+            ...TABLE_PROPS.email,
             sorter: (a: User, b: User) => a.email.localeCompare(b.email)
         },
         {
-            title: 'Phone number',
-            dataIndex: 'phone',
-            width: 200
+            ...TABLE_PROPS.phone
         },
         {
-            title: 'Roles',
-            dataIndex: 'roles',
-            width: 150,
+            ...TABLE_PROPS.roles,
             render: (text, record: User, index) => {
-                const rolesTxt = record.roles.join(' | ');
-                return rolesTxt;
+                const colors = {
+                    Admin: 'red',
+                    User: 'green'
+                };
+                const item = record.roles.map(role => (
+                    <Tag key={role} color={colors[role]}>
+                        {role}
+                    </Tag>
+                ));
+                return item;
             }
         },
         {
-            title: 'Last active on',
-            dataIndex: 'lastOnline',
-            width: 300,
+            ...TABLE_PROPS.lastOnline,
             sorter: (a: User, b: User) => {
                 const time_a = new Date(a.lastOnline);
                 const time_b = new Date(b.lastOnline);
@@ -74,8 +133,18 @@ export default function Users() {
             render: (text, record, index) => TimeManager.formatFromISO(text, 'HH:mm dd.MM.yyyy')
         },
         {
-            title: '',
-            dataIndex: 'operate',
+            ...TABLE_PROPS.isActive,
+            render: (isActive, record, index) => {
+                const item = (
+                    <Tag key={isActive} color={isActive ? 'green' : 'grey'}>
+                        {isActive ? 'online' : 'offline'}
+                    </Tag>
+                );
+                return item;
+            }
+        },
+        {
+            ...TABLE_PROPS.more,
             render: (text, record: User) => {
                 return (
                     <Dropdown
@@ -99,10 +168,6 @@ export default function Users() {
             }
         }
     ];
-
-    const handleDelete = (userId: string) => {
-        deleteUser(userId);
-    };
 
     const empty = <Empty image={<IllustrationNoResult />} darkModeImage={<IllustrationNoResultDark />} description={'No result'} />;
 
@@ -129,19 +194,63 @@ export default function Users() {
         </div>
     );
 
+    const handleDelete = (userId: string) => {
+        deleteUser(userId);
+    };
+
+    const handlePageChange = page => {
+        setCurrentPage(page);
+    };
+
+    const getOnlinePercent = () => {
+        const percent = (onlineUsers / total) * 100;
+        return percent;
+    };
+
     return (
         <Skeleton placeholder={placeholder} loading={isTableLoading}>
-            <Title style={{ marginBottom: '2rem' }}>Users</Title>
-
-            <Table
-                className='table-users'
-                columns={columns}
-                dataSource={dataSource}
-                pagination={{
-                    pageSize: DEFAULT_PAGINATION_PAGE_SIZE
-                }}
-                empty={empty}
-            />
+            <SearchDropdown render={<UsersSearchDropdown input={changedInput} />} />
+            <div className='header'>
+                <IconUserGroup className='header-icon' size='extra-large' />
+                <Title className='header-title' heading={3}>
+                    Users
+                </Title>
+            </div>
+            <div className='dash'>
+                <Table
+                    className='table-users'
+                    columns={columns}
+                    dataSource={dataSource}
+                    pagination={{
+                        currentPage,
+                        pageSize: PAGE_SIZE,
+                        total,
+                        onPageChange: handlePageChange
+                    }}
+                    empty={empty}
+                />
+                <div className='dash-side'>
+                    <Progress
+                        percent={getOnlinePercent()}
+                        width={100}
+                        orbitStroke={'#c6e4c2'}
+                        strokeWidth={5}
+                        type='circle'
+                        showInfo
+                        format={per => (
+                            <div className='progress-info'>
+                                <Title heading={3}>{total}</Title>
+                                <Text>Total users</Text>
+                            </div>
+                        )}
+                        aria-label='active-users'
+                    />
+                    <ul className='progress-notes'>
+                        <li className='active'>Active users: {onlineUsers}</li>
+                        <li className='inactive'>Inactive users: {total - onlineUsers}</li>
+                    </ul>
+                </div>
+            </div>
         </Skeleton>
     );
 }

@@ -1,11 +1,15 @@
 import { IconDelete, IconEdit } from '@douyinfe/semi-icons';
 import { Skeleton, Typography, Avatar, Divider, Button, List, CheckboxGroup, Checkbox } from '@douyinfe/semi-ui';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { getChangedInput } from '~/features/search';
+import { SearchDropdown } from '~/features/search/components';
 import { useDevLoading } from '~/hooks/devHooks';
 import { User } from '~/models';
 import { TimeManager } from '~/utils';
 import { useFetchUser } from '../../hooks';
+import UsersSearchDropdown from '../UsersSearchDropdown/UsersSearchDropdown';
 import './UserDetails.scss';
 
 const { Title, Text } = Typography;
@@ -15,6 +19,7 @@ export default function UserDetails() {
     const { isLoading, isError, data, error } = useFetchUser(userId);
     const devLoading = useDevLoading();
     const [isEditable, setIsEditable] = useState(false);
+    const changedInput = useSelector(getChangedInput);
 
     const handleEditClicked = () => {
         setIsEditable(prev => !prev);
@@ -22,6 +27,7 @@ export default function UserDetails() {
 
     const content = !isLoading && !isError && (
         <div className='content'>
+            <SearchDropdown render={<UsersSearchDropdown input={changedInput} />} />
             <div className='buttons-group-header'>
                 <Button className='button' icon={<IconEdit />} type='tertiary' theme='light' onClick={handleEditClicked}>
                     Edit
@@ -33,7 +39,9 @@ export default function UserDetails() {
             <Divider margin={'1rem'} />
             <div className='content-header'>
                 <div className='ava-group'>
-                    <Avatar src={data?.avatar} />
+                    <Avatar color='lime' src={data?.avatar}>
+                        {User.getShortName(data.firstName, data.lastName)}
+                    </Avatar>
                     <Title>{User.getFullName(data)}</Title>
                 </div>
                 <Text style={{ color: '#aaa' }}>Last online: {TimeManager.formatFromISO(data.lastOnline, 'HH:mm dd.MM.yyyy')}</Text>

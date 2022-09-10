@@ -8,3 +8,18 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+#search-portal {
+    position: fixed;
+    top: 1.2rem;
+    left: calc(240px + 2rem);
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 1223px) {
+    #search-portal {
+        left: 2rem;
+    }
+}

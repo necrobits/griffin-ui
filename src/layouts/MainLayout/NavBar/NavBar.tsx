@@ -3,6 +3,7 @@ import { Avatar, Button, Dropdown, Input, Nav } from '@douyinfe/semi-ui';
 import { IconBell, IconEdit, IconHelpCircle, IconHome, IconLive, IconQuit, IconSearch, IconSemiLogo, IconSetting } from '@douyinfe/semi-icons';
 import './NavBar.scss';
 import { useResponsive } from '~/hooks/responsiveness';
+import { Search } from '~/features/search/components';
 
 export default function NavBar() {
     const { isMobile } = useResponsive();
@@ -14,18 +15,14 @@ export default function NavBar() {
         }
     };
 
+    const searchOnBlur = () => {
+        setShowNavFooter(true);
+    };
+
     return (
         <Nav className='navBar' mode='horizontal' defaultSelectedKeys={['Home']}>
             <Nav.Header className='navBarHeader'>
-                <Input
-                    className='search'
-                    prefix={<IconSearch />}
-                    placeholder={!isMobile ? 'Search users ...' : ''}
-                    size='large'
-                    showClear
-                    onFocus={searchOnFocus}
-                    onBlur={() => setShowNavFooter(true)}
-                />
+                <Search prefix={<IconSearch />} placeholder={!isMobile ? 'Search users ...' : ''} size='large' showClear onFocus={searchOnFocus} onBlur={searchOnBlur} />
             </Nav.Header>
             {showNavFooter && (
                 <Nav.Footer className='navBarFooter'>

@@ -20,8 +20,12 @@ export class ErrorResponse {
 }
 
 export interface RequestResponse<T> {
-    nextId?: number;
-    previousId?: number;
+    pagination: {
+        first: number;
+        last: number;
+        prev: number | undefined;
+        next: number | undefined;
+    };
     total: number;
     results: T[];
 }

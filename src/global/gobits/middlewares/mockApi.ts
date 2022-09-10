@@ -11,6 +11,7 @@ export function mockApi(baseUrl: string, config: MockAPIConfig): Middleware {
     if (!_.isArray(config)) {
         config = [config];
     }
+
     const routeResponse = _.reduce(
         config,
         (acc, singleCfg: any) => {
@@ -28,12 +29,28 @@ export function mockApi(baseUrl: string, config: MockAPIConfig): Middleware {
         {}
     );
 
-    return (req, res, next) => {
+    return async (req, res, next, responded) => {
+        if (responded) {
+            return next();
+        }
         const { url, method } = req;
         const routeKey = `${method} ${url}`;
         if (routeKey in routeResponse) {
-            res.body = routeResponse[routeKey];
-            res.status = 200;
+            const handler = routeResponse[routeKey];
+            let response = handler;
+            let status = 200;
+            if (_.isFunction(handler)) {
+                const retval = await handler({
+                    method: req.method,
+                    query: { ...req.query },
+                    url: req.url,
+                    body: req.body
+                });
+                response = retval.body;
+                status = retval.status || status;
+            }
+            res.body = response;
+            res.status = status;
             res.markAsResponded();
         }
         return next();
