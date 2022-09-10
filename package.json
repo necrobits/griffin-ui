@@ -72,8 +72,11 @@
         "@types/react": "^17.0.38"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json}": [
-            "npm run lint"
+        "src/**/*.{js,jsx,ts,tsx,css,scss,json}": [
+            "npm run lint:format"
+        ],
+        "src/**/*.{js,jsx,ts,tsx}": [
+            "npm run lint:fix"
         ]
     }
 }
