@@ -44,9 +44,71 @@ const getUsersController = req => {
     };
 };
 
+const loginController = req => {
+    const email = req.body.username;
+    const reqPassword = req.body.password;
+
+    const user = users.find(u => u.email === email);
+    if (user === undefined) {
+        return {
+            status: 401,
+            body: {
+                message: 'Email not found'
+            }
+        };
+    }
+
+    const match = user.password === reqPassword;
+    if (!match) {
+        return {
+            status: 401,
+            body: {
+                message: 'Password does not match'
+            }
+        };
+    }
+
+    const { password, ...resUser } = user;
+
+    return {
+        status: 201,
+        body: {
+            user: resUser,
+            token: resUser.id
+        }
+    };
+};
+
+const getMeController = req => {
+    const id: string = req.headers['x-auth-token'];
+    if (id === '')
+        return {
+            status: 401,
+            body: {
+                message: 'Token not found'
+            }
+        };
+    const user = users.find(u => u.id === parseInt(id));
+    if (user === undefined) {
+        return {
+            status: 401,
+            body: {
+                message: 'Token invalid'
+            }
+        };
+    }
+
+    return {
+        status: 200,
+        body: user
+    };
+};
+
 const usersEndpoints = {
     'GET /users': getUsersController,
-    ...generateGetUserEndpoints()
+    ...generateGetUserEndpoints(),
+    'POST /authaccount/login': loginController,
+    'GET /auth/me': getMeController
 };
 
 export default usersEndpoints;

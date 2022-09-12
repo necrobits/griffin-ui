@@ -2,17 +2,22 @@ import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
 // layouts
-import MainLayout from '~/layouts/MainLayout';
+import AdminLayout from '~/layouts/AdminLayout';
+import UserLayout from '~/layouts/UserLayout';
 
 // route
 import ProtectedRoute from '~/routes/ProtectedRoute';
+import UserOverview from '~/views/UserOverview';
+import { AccountPage, AppsPage, NotiPage, ProfilePage } from '~/views/UserSettings';
+import DynamicRoute from './DynamicRoute';
+import PersistLogin from './PersistLogin';
 
 // modules
 const Users = lazy(() => import('~/views/Users'));
 const Login = lazy(() => import('~/views/Login'));
 const Signup = lazy(() => import('~/views/Signup'));
 const Example = lazy(() => import('~/views/Example'));
-const UserDetails = lazy(() => import('~/views/UserDetails'));
+const UsersOverview = lazy(() => import('~/views/UserOverview'));
 
 export type IRoute = {
     exact?: boolean;
@@ -28,11 +33,15 @@ export type IRoute = {
 export const routes: IRoute[] = [
     {
         exact: true,
-        component: () => <Navigate to='example' />
+        component: DynamicRoute
     },
     {
         path: 'login',
         component: Login
+    },
+    {
+        path: 'redirect',
+        component: PersistLogin
     },
     {
         path: 'signup',
@@ -43,23 +52,50 @@ export const routes: IRoute[] = [
         component: Example
     },
     {
-        path: 'users',
-        // guard: ProtectedRoute,
-        component: MainLayout,
+        path: 'admin',
+        guard: ProtectedRoute,
+        component: AdminLayout,
+        requiredRoles: ['Admin'],
         routes: [
             {
-                exact: true,
+                path: 'users',
                 component: Users
             },
             {
-                path: ':userId',
-                // guard: ProtectedRoute,
-                component: UserDetails
+                path: 'users/:userId',
+                component: UserOverview
             }
         ]
     },
     {
-        path: '**',
+        path: 'me',
+        guard: ProtectedRoute,
+        component: UserLayout,
+        routes: [
+            {
+                exact: true,
+                component: UsersOverview
+            },
+            {
+                path: 'settings/profile',
+                component: ProfilePage
+            },
+            {
+                path: 'settings/account',
+                component: AccountPage
+            },
+            {
+                path: 'settings/notifications',
+                component: NotiPage
+            },
+            {
+                path: 'settings/applications',
+                component: AppsPage
+            }
+        ]
+    },
+    {
+        path: '*/*',
         component: () => <Navigate to='example' />
     }
 ];

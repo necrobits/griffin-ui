@@ -1,71 +1,26 @@
-import { IconDelete, IconEdit } from '@douyinfe/semi-icons';
-import { Skeleton, Typography, Avatar, Divider, Button, List, CheckboxGroup, Checkbox } from '@douyinfe/semi-ui';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Skeleton, Typography, Avatar, Divider } from '@douyinfe/semi-ui';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getChangedInput } from '~/features/search';
-import { SearchDropdown } from '~/features/search/components';
-import { useDevLoading } from '~/hooks/devHooks';
+import { useOutletContext, useParams } from 'react-router-dom';
 import { User } from '~/models';
 import { TimeManager } from '~/utils';
 import { useFetchUser } from '../../hooks';
-import UsersSearchDropdown from '../UsersSearchDropdown/UsersSearchDropdown';
-import './UserDetails.scss';
+import styles from './UserDetails.module.scss';
 
 const { Title, Text } = Typography;
 
 export default function UserDetails() {
+    let user,
+        isLoading = false;
+
     const { userId } = useParams();
-    const { isLoading, isError, data, error } = useFetchUser(userId);
-    const devLoading = useDevLoading();
-    const [isEditable, setIsEditable] = useState(false);
-    const changedInput = useSelector(getChangedInput);
-
-    const handleEditClicked = () => {
-        setIsEditable(prev => !prev);
-    };
-
-    const content = !isLoading && !isError && (
-        <div className='content'>
-            <SearchDropdown render={<UsersSearchDropdown input={changedInput} />} />
-            <div className='buttons-group-header'>
-                <Button className='button' icon={<IconEdit />} type='tertiary' theme='light' onClick={handleEditClicked}>
-                    Edit
-                </Button>
-                <Button className='button' icon={<IconDelete />} type='danger' theme='light'>
-                    Delete
-                </Button>
-            </div>
-            <Divider margin={'1rem'} />
-            <div className='content-header'>
-                <div className='ava-group'>
-                    <Avatar color='lime' src={data?.avatar}>
-                        {User.getShortName(data.firstName, data.lastName)}
-                    </Avatar>
-                    <Title>{User.getFullName(data)}</Title>
-                </div>
-                <Text style={{ color: '#aaa' }}>Last online: {TimeManager.formatFromISO(data.lastOnline, 'HH:mm dd.MM.yyyy')}</Text>
-            </div>
-            <Divider margin={'1rem'} />
-            <div className='content-body'>
-                <Text>Email: {data.email}</Text>
-                <Text>Roles: </Text>
-                <CheckboxGroup disabled={!isEditable} direction='horizontal' defaultValue={data.roles}>
-                    <Checkbox value='Admin'>Admin</Checkbox>
-                    <Checkbox value='User'>User</Checkbox>
-                </CheckboxGroup>
-            </div>
-            <Divider margin={'1rem'} />
-            <div className='buttons-group-footer'>
-                <Button className='button' icon={<IconEdit />} type='tertiary' theme='light'>
-                    Cancel
-                </Button>
-                <Button className='button' icon={<IconDelete />} type='primary' theme='solid'>
-                    Save
-                </Button>
-            </div>
-        </div>
-    );
+    if (userId !== undefined) {
+        const { isLoading: isUserLoading, data, error } = useFetchUser(userId);
+        user = data;
+        isLoading = isUserLoading;
+    } else {
+        user = useOutletContext();
+    }
 
     const placeholder = (
         <div className='placeholder'>
@@ -77,8 +32,97 @@ export default function UserDetails() {
     );
 
     return (
-        <Skeleton placeholder={placeholder} loading={devLoading}>
-            {content}
+        <Skeleton placeholder={placeholder} loading={isLoading}>
+            {!isLoading && (
+                <div className={styles.content}>
+                    <div className={styles.contentHeader}>
+                        <Avatar className={styles.avatar} src={user.avatar}>
+                            {user.avatar ? '' : User.getShortName(user.firstName, user.lastName)}
+                        </Avatar>
+                        <div className={styles.nameGroup}>
+                            <Title heading={1}>{User.getFullName(user)}</Title>
+                            <Text type={'quaternary'}>Joined since {TimeManager.formatFromISO(user.createdAt, 'MMMM dd, yyyy')}</Text>
+                        </div>
+                    </div>
+                    <div className={styles.contentBody}>
+                        <Divider margin={'1rem'} align={'left'}>
+                            Basic information
+                        </Divider>
+                        <div className={styles.section}>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Username
+                                </Title>
+                                <Text>{user.username}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Gender
+                                </Title>
+                                <Text>{user.gender}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Date of birth
+                                </Title>
+                                <Text>{TimeManager.formatFromDate(TimeManager.startOfDateFromStr(user.birthDate), 'MMMM dd, yyyy')}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Nation
+                                </Title>
+                                <Text>{user.nationality}</Text>
+                            </div>
+                        </div>
+                        <Divider margin={'1rem'} align={'left'}>
+                            Contact
+                        </Divider>
+                        <div className={styles.section}>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Email
+                                </Title>
+                                <Text>{user.email}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Phone number
+                                </Title>
+                                <Text>{user.phone}</Text>
+                            </div>
+                        </div>
+                        <Divider margin={'1rem'} align={'left'}>
+                            Address
+                        </Divider>
+                        <div className={styles.section}>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Street
+                                </Title>
+                                <Text>{user.address.street}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Postal code
+                                </Title>
+                                <Text>{user.address.post}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    City
+                                </Title>
+                                <Text>{user.address.city}</Text>
+                            </div>
+                            <div className={styles.item}>
+                                <Title heading={6} className={styles.title}>
+                                    Country
+                                </Title>
+                                <Text>{user.address.country}</Text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </Skeleton>
     );
 }

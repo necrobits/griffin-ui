@@ -3,15 +3,25 @@ import { ErrorResponse } from '~/services';
 export class User {
     id: number;
     email: string;
+    username: string;
     firstName: string;
     lastName: string;
     fullName?: string;
+    gender: string;
     avatar?: string;
     createdAt: string;
     lastOnline: string;
     roles: string[];
     phone: string;
     isActive: boolean;
+    address: {
+        street: string;
+        post: number;
+        city: string;
+        country: string;
+    };
+    birthDate: string;
+    nationality: string;
 
     static getShortName(firstName: string | undefined, lastName: string | undefined): string {
         if (!firstName || !lastName) return '';

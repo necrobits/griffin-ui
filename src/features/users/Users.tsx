@@ -1,20 +1,20 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
+import { Avatar, Breadcrumb, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
-import { IconDelete, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
+import { IconArticle, IconDelete, IconHome, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
 import { User } from '~/models';
-import './Users.scss';
+import styles from './Users.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { TimeManager } from '~/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInput, getChangedInput } from '../search';
 import { SearchDropdown } from '../search/components';
-import UsersSearchDropdown from './components/UsersSearchDropdown/UsersSearchDropdown';
+import UsersSearchDropdown from '../search/components/SearchedUsers/SearchedUsers';
 import { useGetOnlineUsers, useDeleteUser, useFetchUsers } from './hooks';
 
 const { Text, Title } = Typography;
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 7;
 const TABLE_PROPS = {
     name: {
         title: 'Name',
@@ -90,7 +90,7 @@ export default function Users() {
             sorter: (a: User, b: User) => User.getFullName(a).localeCompare(User.getFullName(b)),
             render: (text, record: User, index) => {
                 return (
-                    <div className='col-name-record'>
+                    <div className={styles.colNameRec}>
                         <Avatar size='small' color='lime' src={record.avatar} style={{ marginRight: 12 }}>
                             {User.getShortName(record.firstName, record.lastName)}
                         </Avatar>
@@ -152,7 +152,7 @@ export default function Users() {
                         position='bottomLeft'
                         render={
                             <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => navigate(`/users/${record.id}`)}>
+                                <Dropdown.Item onClick={() => navigate(`/admin/users/${record.id}`)}>
                                     <IconMore />
                                     Details
                                 </Dropdown.Item>
@@ -210,47 +210,47 @@ export default function Users() {
     return (
         <Skeleton placeholder={placeholder} loading={isTableLoading}>
             <SearchDropdown render={<UsersSearchDropdown input={changedInput} />} />
-            <div className='header'>
-                <IconUserGroup className='header-icon' size='extra-large' />
-                <Title className='header-title' heading={3}>
-                    Users
-                </Title>
-            </div>
-            <div className='dash'>
-                <Table
-                    className='table-users'
-                    columns={columns}
-                    dataSource={dataSource}
-                    pagination={{
-                        currentPage,
-                        pageSize: PAGE_SIZE,
-                        total,
-                        onPageChange: handlePageChange
-                    }}
-                    empty={empty}
-                />
-                <div className='dash-side'>
+            <div className={styles.header}>
+                <div className={styles.headerText}>
+                    <IconUserGroup className={styles.headerIcon} size='extra-large' />
+                    <Title className={styles.headerTitle} heading={3}>
+                        Users Management
+                    </Title>
+                </div>
+                <div className={styles.asside}>
                     <Progress
                         percent={getOnlinePercent()}
-                        width={100}
-                        orbitStroke={'#c6e4c2'}
+                        width={90}
+                        orbitStroke={'var(--semi-color-tertiary)'}
                         strokeWidth={5}
                         type='circle'
                         showInfo
                         format={per => (
-                            <div className='progress-info'>
-                                <Title heading={3}>{total}</Title>
+                            <div className={styles.progressInfo}>
+                                <Title heading={4}>{total}</Title>
                                 <Text>Total users</Text>
                             </div>
                         )}
                         aria-label='active-users'
                     />
-                    <ul className='progress-notes'>
-                        <li className='active'>Active users: {onlineUsers}</li>
-                        <li className='inactive'>Inactive users: {total - onlineUsers}</li>
+                    <ul className={styles.progressNotes}>
+                        <li className={styles.active}>Active users: {onlineUsers}</li>
+                        <li className={styles.inactive}>Inactive users: {total - onlineUsers}</li>
                     </ul>
                 </div>
             </div>
+            <Table
+                className={styles.table}
+                columns={columns}
+                dataSource={dataSource}
+                pagination={{
+                    currentPage,
+                    pageSize: PAGE_SIZE,
+                    total,
+                    onPageChange: handlePageChange
+                }}
+                empty={empty}
+            />
         </Skeleton>
     );
 }

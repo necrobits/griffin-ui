@@ -41,6 +41,7 @@ export function mockApi(baseUrl: string, config: MockAPIConfig): Middleware {
             let status = 200;
             if (_.isFunction(handler)) {
                 const retval = await handler({
+                    headers: req.headers,
                     method: req.method,
                     query: { ...req.query },
                     url: req.url,

@@ -2,7 +2,7 @@ import { createHive } from '@redux-hive/core';
 import { UserState } from '~/models';
 import { UserActionTypes } from './user.action';
 import { LStorage } from '~/storage';
-import { AUTH_TOKEN } from '~/constants';
+import { AUTH_TOKEN, PERSIST } from '~/constants';
 
 const initialState: UserState = {
     currentUser: undefined,
@@ -28,6 +28,7 @@ export const userHive = createHive<UserState>({
 
         [UserActionTypes.logout]: state => {
             LStorage.removeItem(AUTH_TOKEN);
+            LStorage.removeItem(PERSIST);
             state.currentUser = null;
             state.isAuthing = false;
         }

@@ -51,10 +51,10 @@ const Go = new Gobits({
 });
 
 Go.use(caseMapperMiddleware);
+Go.use(simpleAuth);
 if (Config.isMockingApi) {
     Go.use(mockApi(Config.serverApi, [mockDataUsers, mockDataClients]));
 }
-Go.use(simpleAuth);
 Go.use(handleResponse);
 
 export default Go;
