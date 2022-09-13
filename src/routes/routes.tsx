@@ -7,8 +7,6 @@ import UserLayout from '~/layouts/UserLayout';
 
 // route
 import ProtectedRoute from '~/routes/ProtectedRoute';
-import UserOverview from '~/views/UserOverview';
-import { AccountPage, AppsPage, NotiPage, ProfilePage } from '~/views/UserSettings';
 import DynamicRoute from './DynamicRoute';
 import PersistLogin from './PersistLogin';
 
@@ -17,7 +15,12 @@ const Users = lazy(() => import('~/views/Users'));
 const Login = lazy(() => import('~/views/Login'));
 const Signup = lazy(() => import('~/views/Signup'));
 const Example = lazy(() => import('~/views/Example'));
-const UsersOverview = lazy(() => import('~/views/UserOverview'));
+const AccountPage = lazy(() => import('~/views/AccountPage'));
+const NotiPage = lazy(() => import('~/views/NotificationsPage'));
+const ProfilePage = lazy(() => import('~/views/ProfilePage'));
+const OverviewPage = lazy(() => import('~/views/UserOverview'));
+const AppsPage = lazy(() => import('~/views/ApplicationsPage'));
+const UserSettingsPage = lazy(() => import('~/views/UserSettings'));
 
 export type IRoute = {
     exact?: boolean;
@@ -63,7 +66,7 @@ export const routes: IRoute[] = [
             },
             {
                 path: 'users/:userId',
-                component: UserOverview
+                component: UserSettingsPage
             }
         ]
     },
@@ -74,7 +77,7 @@ export const routes: IRoute[] = [
         routes: [
             {
                 exact: true,
-                component: UsersOverview
+                component: OverviewPage
             },
             {
                 path: 'settings/profile',

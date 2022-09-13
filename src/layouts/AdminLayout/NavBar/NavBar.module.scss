@@ -3,4 +3,14 @@
     height: 80px;
     background-color: white;
     box-shadow: 0 0 5px #aaa;
+
+    .navbarHeader {
+        height: fit-content;
+
+        .content {
+            position: absolute;
+            top: 1.2rem;
+            z-index: 10;
+        }
+    }
 }

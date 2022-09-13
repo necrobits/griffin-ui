@@ -1,15 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Avatar, Breadcrumb, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
-import { IconArticle, IconDelete, IconHome, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
+import { IconArticle, IconDelete, IconHome, IconMore, IconSearch, IconUserGroup } from '@douyinfe/semi-icons';
 import { User } from '~/models';
 import styles from './Users.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { TimeManager } from '~/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInput, getChangedInput } from '../search';
-import { SearchDropdown } from '../search/components';
-import UsersSearchDropdown from '../search/components/SearchedUsers/SearchedUsers';
+import { Search, SearchDropdown, SearchedUsers } from '../search/components';
 import { useGetOnlineUsers, useDeleteUser, useFetchUsers } from './hooks';
 
 const { Text, Title } = Typography;
@@ -64,8 +63,6 @@ export default function Users() {
 
     const { data, isLoading: isUsersLoading } = useFetchUsers({ pageSize: PAGE_SIZE, page: currentPage });
     const { mutate: deleteUser, isLoading: isDeleteLoading } = useDeleteUser();
-
-    const changedInput = useSelector(getChangedInput);
 
     useEffect(() => {
         return () => {
@@ -209,7 +206,6 @@ export default function Users() {
 
     return (
         <Skeleton placeholder={placeholder} loading={isTableLoading}>
-            <SearchDropdown render={<UsersSearchDropdown input={changedInput} />} />
             <div className={styles.header}>
                 <div className={styles.headerText}>
                     <IconUserGroup className={styles.headerIcon} size='extra-large' />

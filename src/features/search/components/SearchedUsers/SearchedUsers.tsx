@@ -1,30 +1,24 @@
+import React from 'react';
 import { List, Skeleton, Avatar, Tag } from '@douyinfe/semi-ui';
 import Title from '@douyinfe/semi-ui/lib/es/typography/title';
-import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDevLoading } from '~/hooks';
 import { User } from '~/models';
 import { useFetchUsers } from '../../../users/hooks/useFetchUsers';
-import './SearchedUsers.scss';
+import styles from './SearchedUsers.module.scss';
+import { useDispatch } from 'react-redux';
+import { clearInput } from '../../search.action';
 
 type Props = {
     input: string;
-    setSearched: React.Dispatch<React.SetStateAction<boolean>>;
-    isSearching: boolean;
-    searched: boolean;
 };
 
-export default function SearchedUsers({ searched, input, isSearching, setSearched }: Props) {
-    if (!isSearching && !searched) return <></>;
-
+export default function SearchedUsers({ input }: Props) {
     const navigate = useNavigate();
-    const { data, isLoading, isSuccess } = useFetchUsers({ pageSize: 5, name: input });
-
-    if (isSuccess) {
-        setSearched(true);
-    }
+    const dispatch = useDispatch();
+    const { data, isLoading } = useFetchUsers({ pageSize: 5, name: input });
 
     const handleItemClicked = userId => {
+        dispatch(clearInput());
         navigate(`/admin/users/${userId}`);
     };
 
@@ -43,23 +37,25 @@ export default function SearchedUsers({ searched, input, isSearching, setSearche
 
     return (
         <Skeleton placeholder={placeholder} loading={isLoading}>
-            <List
-                className='list'
-                dataSource={!isLoading ? data.results : []}
-                renderItem={item => (
-                    <List.Item onClick={() => handleItemClicked(item.id)} className='list-item'>
-                        <div className='list-item-left'>
-                            <Avatar size={'extra-extra-small'} color='lime' src={item.avatar}>
-                                {User.getShortName(item.firstName, item.lastName)}
-                            </Avatar>
-                            <Title heading={6}>{User.getFullName(item)}</Title>
-                        </div>
-                        <Tag key={item.roles[0]} color={item.roles[0] === 'Admin' ? 'red' : 'green'}>
-                            {item.roles[0]}
-                        </Tag>
-                    </List.Item>
-                )}
-            />
+            <div className='preventMouseDown' onMouseDown={e => e.preventDefault()}>
+                <List
+                    className={styles.list}
+                    dataSource={!isLoading ? data.results : []}
+                    renderItem={item => (
+                        <List.Item onClick={() => handleItemClicked(item.id)} className={styles.listITem}>
+                            <div className={styles.left}>
+                                <Avatar size={'extra-extra-small'} color='lime' src={item.avatar}>
+                                    {User.getShortName(item.firstName, item.lastName)}
+                                </Avatar>
+                                <Title heading={6}>{User.getFullName(item)}</Title>
+                            </div>
+                            <Tag key={item.roles[0]} color={item.roles[0] === 'Admin' ? 'red' : 'green'}>
+                                {item.roles[0]}
+                            </Tag>
+                        </List.Item>
+                    )}
+                />
+            </div>
         </Skeleton>
     );
 }

@@ -18,14 +18,13 @@ const AdminLayout = () => {
 
     return (
         <>
-            <Search placeholder={'Search...'} prefix={<IconSearch />} size='large' showClear />
             <Layout>
                 <Sider>
                     <Sidebar />
                 </Sider>
                 <Layout>
                     <Header>
-                        <NavBar user={user} />
+                        <NavBar user={user} withLogo={false} />
                     </Header>
                     <Content className={styles.content}>
                         <div className={styles.dash}>

@@ -15,6 +15,7 @@ export default function NavBar({ user }) {
                 <Link to={'/'}>
                     <img src={logo} width={'150px'} />
                 </Link>
+                <div id='navbarHeader-content'></div>
             </Nav.Header>
             <Nav.Footer className={styles.navFooter}>
                 <NavbarFooter user={user} />

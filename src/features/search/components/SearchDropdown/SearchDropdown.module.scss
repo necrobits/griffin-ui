@@ -1,7 +1,27 @@
-.searchDropdown {
-    width: 100%;
-    border-radius: 5px;
-    z-index: 1;
-    background-color: #eee;
-    padding: 1rem;
+.search {
+    .searchInput {
+        width: 500px;
+
+        &:focus-within {
+            background-color: white;
+        }
+
+        &:not(:focus-within) ~ .overlay,
+        &:not(:focus-within) ~ .searchDropdown {
+            display: none;
+        }
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(97, 97, 97, 0.418);
+        z-index: -1;
+    }
+    .searchDropdown {
+        background-color: white;
+        padding: 1rem;
+    }
 }
