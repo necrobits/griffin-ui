@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Nav } from '@douyinfe/semi-ui';
 import { IconDesktop, IconUserGroup } from '@douyinfe/semi-icons';
 import styles from './Sidebar.module.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
 
 const keyPath = {
@@ -39,7 +39,9 @@ export default function Sidebar() {
     return (
         <Nav selectedKeys={selectedKeys} className={styles.sideNav} onSelect={onSelect}>
             <Nav.Header>
-                <img src={logo} width={'200px'} />
+                <Link to={'/'}>
+                    <img src={logo} width={'150px'} />
+                </Link>
             </Nav.Header>
             {manageItems}
         </Nav>
