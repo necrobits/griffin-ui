@@ -23,10 +23,10 @@ export default function SearchDropdown({ components }) {
     const render = components.map(component => {
         const Component = component.component;
         return (
-            <>
+            <div key={component.name}>
                 <Title heading={6}>{component.name}</Title>
                 <Component input={currentChangedInput} />
-            </>
+            </div>
         );
     });
 

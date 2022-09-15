@@ -2,26 +2,27 @@ import { ErrorResponse } from '~/services';
 
 export class User {
     id: number;
-    email: string;
-    username: string;
     firstName: string;
     lastName: string;
+    username: string;
+    email: string;
+    backupEmail: string;
     fullName?: string;
-    gender: string;
+    nationality: string;
+    birthDate: string;
     avatar?: string;
-    createdAt: string;
-    lastOnline: string;
-    roles: string[];
-    phone: string;
-    isActive: boolean;
+    gender: string;
+    phoneNumber: string;
     address: {
         street: string;
         post: number;
         city: string;
         country: string;
     };
-    birthDate: string;
-    nationality: string;
+    roles: string[];
+    createdAt: string;
+    lastOnline: string;
+    isActive: boolean;
 
     static getShortName(firstName: string | undefined, lastName: string | undefined): string {
         if (!firstName || !lastName) return '';
@@ -31,6 +32,10 @@ export class User {
     static getFullName(user: User): string {
         if (user.fullName) return user.fullName;
         return `${user.firstName} ${user.lastName}`;
+    }
+
+    static isAdmin(user: User): boolean {
+        return user.roles.includes('Admin');
     }
 }
 

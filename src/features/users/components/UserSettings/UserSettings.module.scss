@@ -1,0 +1,22 @@
+.userSettings {
+    .collapsePanel {
+        padding: 1rem;
+        font-size: 5rem;
+
+        & > div {
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            padding: 0.5rem 2rem;
+
+            &[aria-expanded='true'] {
+                background-color: var(--semi-color-tertiary);
+                color: white;
+                transition: all 0.3s;
+
+                svg {
+                    color: white;
+                }
+            }
+        }
+    }
+}

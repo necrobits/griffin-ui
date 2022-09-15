@@ -29,7 +29,7 @@ const AdminLayout = () => {
                     <Content className={styles.content}>
                         <div className={styles.dash}>
                             <ErrorBoundary>
-                                <Outlet />
+                                <Outlet context={user} />
                             </ErrorBoundary>
                         </div>
                     </Content>

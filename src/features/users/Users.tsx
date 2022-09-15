@@ -25,9 +25,9 @@ const TABLE_PROPS = {
         dataIndex: 'email',
         width: 300
     },
-    phone: {
-        title: 'Phone number',
-        dataIndex: 'phone',
+    username: {
+        title: 'Username',
+        dataIndex: 'username',
         width: 200
     },
     roles: {
@@ -103,7 +103,8 @@ export default function Users() {
             sorter: (a: User, b: User) => a.email.localeCompare(b.email)
         },
         {
-            ...TABLE_PROPS.phone
+            ...TABLE_PROPS.username,
+            sorter: (a: User, b: User) => a.username.localeCompare(b.username)
         },
         {
             ...TABLE_PROPS.roles,

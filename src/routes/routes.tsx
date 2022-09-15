@@ -16,11 +16,9 @@ const Login = lazy(() => import('~/views/Login'));
 const Signup = lazy(() => import('~/views/Signup'));
 const Example = lazy(() => import('~/views/Example'));
 const AccountPage = lazy(() => import('~/views/AccountPage'));
-const NotiPage = lazy(() => import('~/views/NotificationsPage'));
 const ProfilePage = lazy(() => import('~/views/ProfilePage'));
-const OverviewPage = lazy(() => import('~/views/UserOverview'));
 const AppsPage = lazy(() => import('~/views/ApplicationsPage'));
-const UserSettingsPage = lazy(() => import('~/views/UserSettings'));
+const UserSettingsPage = lazy(() => import('~/views/UserSettingsPage'));
 
 export type IRoute = {
     exact?: boolean;
@@ -77,19 +75,11 @@ export const routes: IRoute[] = [
         routes: [
             {
                 exact: true,
-                component: OverviewPage
-            },
-            {
-                path: 'settings/profile',
                 component: ProfilePage
             },
             {
                 path: 'settings/account',
                 component: AccountPage
-            },
-            {
-                path: 'settings/notifications',
-                component: NotiPage
             },
             {
                 path: 'settings/applications',
