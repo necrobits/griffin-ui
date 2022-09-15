@@ -3,6 +3,7 @@ import Text from '@douyinfe/semi-ui/lib/es/typography/text';
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { User } from '~/models';
+import ChangePassword from '../ChangePassword';
 import styles from '../UserForm.module.scss';
 
 type Props = {
@@ -20,12 +21,16 @@ export default function UserAccount({ user: propUser }: Props) {
 
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [isBackupEmailDisabled, setIsBackupEmailDisabled] = useState(true);
+    const [visibleChangePassword, setVisibleChangePassword] = useState(false);
 
     const handleChangeEmail = () => {
         setIsEmailDisabled(prev => !prev);
     };
     const handleChangeBackupEmail = () => {
         setIsBackupEmailDisabled(prev => !prev);
+    };
+    const handleChangePwdClicked = () => {
+        setVisibleChangePassword(true);
     };
 
     return (
@@ -71,9 +76,10 @@ export default function UserAccount({ user: propUser }: Props) {
                     <Text className={styles.formInfo}>You can also use this username to sign in.</Text>
                 </Form.Slot>
                 <Form.Slot className={styles.formGroup} label={'Password'}>
-                    <Button type={'tertiary'} theme={'solid'}>
+                    <Button type={'tertiary'} theme={'solid'} onClick={handleChangePwdClicked}>
                         Change password
                     </Button>
+                    <ChangePassword visible={visibleChangePassword} setVisible={setVisibleChangePassword} />
                 </Form.Slot>
                 <Button className={styles.formSaveBtn} htmlType={'submit'} type={'primary'} theme={'solid'}>
                     Save changes
