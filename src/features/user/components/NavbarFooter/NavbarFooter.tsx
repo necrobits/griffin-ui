@@ -48,10 +48,6 @@ export default function NavbarFooter({ user }) {
                             </Avatar>
                             <Text strong={true}>{User.getFullName(user)}</Text>
                         </Dropdown.Item>
-                        <Dropdown.Item className='dropdown-item'>
-                            <IconSetting />
-                            <Text>Settings</Text>
-                        </Dropdown.Item>
                         <Dropdown.Item className='dropdown-item' onClick={handleSignout}>
                             <IconQuit style={{ color: 'red' }} />
                             <Text type='danger'>Sign out</Text>
