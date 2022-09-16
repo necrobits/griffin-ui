@@ -23,7 +23,7 @@ const DynamicRoute: React.FC<Props> = ({ component: RouteComponent }) => {
     }
 
     if (user.roles.includes('User')) {
-        return <Navigate to={'/me'} />;
+        return <Navigate to={`${user.id}`} />;
     }
 
     return <Navigate to='/login' />;

@@ -6,29 +6,30 @@ import ErrorBoundary from '~/containers/ErrorBoundary';
 // components
 import NavBar from './NavBar';
 import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
-import { useResponsive } from '~/hooks/responsiveness';
+import { Outlet, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from '~/features/user';
+import { useFetchUser } from '~/features/users/hooks';
 
 const UserLayout = () => {
     const { Header, Sider, Content } = Layout;
-    const user = useSelector(getCurrentUser);
+    const currentUser = useSelector(getCurrentUser);
+    const { userId } = useParams();
+
+    const { isLoading, data: user } = useFetchUser(userId);
 
     return (
         <Layout>
             <Header>
-                <NavBar user={user} />
+                <NavBar user={currentUser} />
             </Header>
             <div className='container'>
                 <Layout className={styles.layout}>
                     <Sider>
-                        <Sidebar />
+                        <Sidebar userId={userId} />
                     </Sider>
                     <Content className={styles.content}>
-                        <ErrorBoundary>
-                            <Outlet context={user} />
-                        </ErrorBoundary>
+                        <ErrorBoundary>{isLoading ? <p>Loading ...</p> : <Outlet context={user} />}</ErrorBoundary>
                     </Content>
                 </Layout>
             </div>

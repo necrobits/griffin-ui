@@ -1,9 +1,14 @@
 import { Button, Form } from '@douyinfe/semi-ui';
 import Text from '@douyinfe/semi-ui/lib/es/typography/text';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
+import { getCurrentUser } from '~/features/user/user.selector';
 import { User } from '~/models';
+import { patchUser } from '~/services';
+import { usePatchUser } from '../../hooks/usePatchUser';
 import ChangePassword from '../ChangePassword';
+import SuccessUpdatedModal from '../SuccessUpdatedModal/SuccessUpdatedModal';
 import styles from '../UserForm.module.scss';
 
 type Props = {
@@ -11,17 +16,17 @@ type Props = {
 };
 
 export default function UserAccount({ user: propUser }: Props) {
-    let user: User;
-    const currentUser: User = useOutletContext();
-    if (propUser !== undefined) {
+    let user: User = useOutletContext();
+    if (propUser) {
         user = propUser;
-    } else {
-        user = currentUser;
     }
+    const currentUser = useSelector(getCurrentUser);
+    const { isLoading, mutate: patchUser, error } = usePatchUser(`${user.id}`);
 
     const [isEmailDisabled, setIsEmailDisabled] = useState(true);
     const [isBackupEmailDisabled, setIsBackupEmailDisabled] = useState(true);
     const [visibleChangePassword, setVisibleChangePassword] = useState(false);
+    const [isUpdatedModalVisible, setIsUpdatedModalVisible] = useState(false);
 
     const handleChangeEmail = () => {
         setIsEmailDisabled(prev => !prev);
@@ -33,9 +38,22 @@ export default function UserAccount({ user: propUser }: Props) {
         setVisibleChangePassword(true);
     };
 
+    const handleSubmit = values => {
+        const fields = values;
+        patchUser({ userId: user.id, ...fields }, { onSuccess: () => setIsUpdatedModalVisible(true) });
+    };
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <div className={styles.formContainer}>
-            <Form className={styles.formBody} labelPosition='left' labelWidth={200}>
+            <Form className={styles.formBody} labelPosition='left' labelWidth={200} onSubmit={handleSubmit}>
                 <Form.Slot className={styles.formGroup} label={'Primary email'}>
                     <Form.Input className={styles.formInput} field='email' noLabel initValue={user.email} disabled={isEmailDisabled} />
                     <Text className={styles.formInfo}>This will the sign in email as well as the email, which receives notifications.</Text>
@@ -79,11 +97,12 @@ export default function UserAccount({ user: propUser }: Props) {
                     <Button type={'tertiary'} theme={'solid'} onClick={handleChangePwdClicked}>
                         Change password
                     </Button>
-                    <ChangePassword visible={visibleChangePassword} setVisible={setVisibleChangePassword} />
+                    <ChangePassword visible={visibleChangePassword} setVisible={setVisibleChangePassword} userId={user.id} />
                 </Form.Slot>
                 <Button className={styles.formSaveBtn} htmlType={'submit'} type={'primary'} theme={'solid'}>
                     Save changes
                 </Button>
+                <SuccessUpdatedModal visible={isUpdatedModalVisible} setVisible={setIsUpdatedModalVisible} />
             </Form>
         </div>
     );

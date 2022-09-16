@@ -1,4 +1,4 @@
-export * from './user';
+export * from './users/user';
 export * from './auth';
 
 export type BaseFilterParams = {

@@ -9,8 +9,6 @@ import NavBar from './NavBar';
 import Sidebar from './Sidebar';
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from '~/features/user';
-import { Search } from '~/features/search/components';
-import { IconSearch } from '@douyinfe/semi-icons';
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
@@ -24,12 +22,12 @@ const AdminLayout = () => {
                 </Sider>
                 <Layout>
                     <Header>
-                        <NavBar user={user} withLogo={false} />
+                        <NavBar user={user} />
                     </Header>
                     <Content className={styles.content}>
                         <div className={styles.dash}>
                             <ErrorBoundary>
-                                <Outlet context={user} />
+                                <Outlet />
                             </ErrorBoundary>
                         </div>
                     </Content>

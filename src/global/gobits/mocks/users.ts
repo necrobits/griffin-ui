@@ -1,16 +1,7 @@
 import _ from 'lodash';
-import { users } from './usersList';
+import usersJson from './users.json';
 
-const generateGetUserEndpoints = () => {
-    let reqRes = {};
-    users.forEach(user => {
-        const res = {};
-        const key = `GET /users/${user.id}`;
-        res[key] = user;
-        reqRes = { ...reqRes, ...res };
-    });
-    return reqRes;
-};
+let users = usersJson;
 
 const getUsersController = req => {
     const pageSize = req.query.page_size || users.length;
@@ -42,6 +33,28 @@ const getUsersController = req => {
             results
         }
     };
+};
+
+const getUserController = userId => {
+    return req => {
+        const user = users.find(u => u.id === parseInt(userId));
+        return {
+            status: 200,
+            body: user
+        };
+    };
+};
+
+const generateGetUserEndpoints = () => {
+    let reqRes = {};
+
+    users.forEach(user => {
+        const res = {};
+        const key = `GET /users/${user.id}`;
+        res[key] = getUserController(user.id);
+        reqRes = { ...reqRes, ...res };
+    });
+    return reqRes;
 };
 
 const loginController = req => {
@@ -104,11 +117,78 @@ const getMeController = req => {
     };
 };
 
+const patchUserController = userId => req => {
+    const fields = req.body;
+    const user = users.find(u => u.id === parseInt(userId));
+
+    Object.keys(fields).forEach(key => (user[key] = fields[key]));
+
+    users = users.filter(u => u.id !== parseInt(userId));
+    users.push(user);
+
+    const { password, ...resUser } = user;
+
+    return {
+        status: 200,
+        body: resUser
+    };
+};
+
+const generatePatchUserEndpoints = () => {
+    let reqRes = {};
+
+    users.forEach(user => {
+        const res = {};
+        const key = `PATCH /users/${user.id}`;
+        res[key] = patchUserController(user.id);
+        reqRes = { ...reqRes, ...res };
+    });
+    return reqRes;
+};
+
+const changePasswordController = userId => req => {
+    const { old_pwd, new_pwd } = req.body;
+    const user = users.find(u => u.id === parseInt(userId));
+
+    if (old_pwd !== user.password) {
+        return {
+            status: 400,
+            body: {
+                message: 'Old password does not match.'
+            }
+        };
+    }
+    user.password = new_pwd;
+    users = users.filter(u => u.id !== parseInt(userId));
+    users.push(user);
+
+    return {
+        status: 200,
+        body: {
+            message: 'Password changed'
+        }
+    };
+};
+
+const generateChangePasswordEndpoints = () => {
+    let reqRes = {};
+
+    users.forEach(user => {
+        const res = {};
+        const key = `PATCH /users/${user.id}/change_password`;
+        res[key] = changePasswordController(user.id);
+        reqRes = { ...reqRes, ...res };
+    });
+    return reqRes;
+};
+
 const usersEndpoints = {
     'GET /users': getUsersController,
     ...generateGetUserEndpoints(),
     'POST /authaccount/login': loginController,
-    'GET /auth/me': getMeController
+    'GET /auth/me': getMeController,
+    ...generatePatchUserEndpoints(),
+    ...generateChangePasswordEndpoints()
 };
 
 export default usersEndpoints;

@@ -5,6 +5,6 @@ type Props = {
     user?: User;
 };
 
-export default function UserApps({ user: propUser }: Props) {
+export default function UserApps({ user }: Props) {
     return <div>UserApps</div>;
 }

@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import Forbidden from '~/components/Forbidden/Forbidden';
 import { LStorage } from '~/storage';
 import { AUTH_TOKEN, PERSIST } from '~/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchedUser, getCurrentUser, isAuthingUser } from '~/features/user';
+import { useSelector } from 'react-redux';
+import { getCurrentUser, isAuthingUser } from '~/features/user';
 import { Spin } from '@douyinfe/semi-ui';
-import { useGetMe } from '~/hooks/queries/useGetMe';
 
 type Props = {
     component: React.ComponentType;

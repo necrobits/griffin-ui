@@ -1,7 +1,7 @@
 import { User } from '~/models/user';
 import Go from '~/global/gobits';
-import { Response } from 'gobits';
 import { BaseFilterParams, RequestResponse } from '~/services/index';
+import { ChangePasswordInput, PatchUserInput } from './types';
 
 export type UsersFetchInput = BaseFilterParams;
 
@@ -27,6 +27,14 @@ export const fetchUsers = ({ queryKey }) => {
 export const fetchUser = ({ queryKey }) => {
     const [_key, userId] = queryKey;
     return Go.get<User>(`/users/${userId}`).then(res => res.body);
+};
+
+export const changePassword = ({ userId, ...fields }: ChangePasswordInput) => {
+    return Go.patch<User>(`/users/${userId}/change_password`, { body: fields }).then(res => res.body);
+};
+
+export const patchUser = ({ userId, ...fields }: PatchUserInput) => {
+    return Go.patch<User>(`/users/${userId}`, { body: fields }).then(res => res.body);
 };
 
 export const deleteUser = (userId: string) => {

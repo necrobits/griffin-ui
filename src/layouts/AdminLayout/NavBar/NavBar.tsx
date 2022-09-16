@@ -7,7 +7,7 @@ import styles from './NavBar.module.scss';
 import logo from 'assets/images/logo.png';
 import { Link } from 'react-router-dom';
 
-export default function NavBar({ user, withLogo }) {
+export default function NavBar({ user }) {
     return (
         <Nav className={styles.navBar} mode='horizontal'>
             <Nav.Header className={styles.navbarHeader}>

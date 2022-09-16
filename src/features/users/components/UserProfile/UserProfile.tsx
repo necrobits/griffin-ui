@@ -11,11 +11,9 @@ type Props = {
 };
 
 export default function UserProfile({ user: propUser }: Props) {
-    let user: User;
-    if (propUser !== undefined) {
+    let user: User = useOutletContext();
+    if (propUser) {
         user = propUser;
-    } else {
-        user = useOutletContext();
     }
 
     const [isEditMode, setIsEditMode] = useState(false);
@@ -29,7 +27,7 @@ export default function UserProfile({ user: propUser }: Props) {
             <Button className={styles.editProfileBtn} type={'tertiary'} theme={'solid'} onClick={handleEditButtonClicked}>
                 {isEditMode ? 'View profile' : 'Edit profile'}
             </Button>
-            {isEditMode ? <UserProfileForm user={user} /> : <UserDetails user={user} />}
+            {isEditMode ? <UserProfileForm user={user} setIsEditMode={setIsEditMode} /> : <UserDetails user={user} />}
         </div>
     );
 }

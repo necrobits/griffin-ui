@@ -9,6 +9,7 @@ import UserLayout from '~/layouts/UserLayout';
 import ProtectedRoute from '~/routes/ProtectedRoute';
 import DynamicRoute from './DynamicRoute';
 import PersistLogin from './PersistLogin';
+import PrivateRoute from './PrivateRoute';
 
 // modules
 const Users = lazy(() => import('~/views/Users'));
@@ -69,20 +70,23 @@ export const routes: IRoute[] = [
         ]
     },
     {
-        path: 'me',
+        path: ':userId',
         guard: ProtectedRoute,
         component: UserLayout,
         routes: [
             {
                 exact: true,
+                guard: PrivateRoute,
                 component: ProfilePage
             },
             {
-                path: 'settings/account',
+                path: 'account',
+                guard: PrivateRoute,
                 component: AccountPage
             },
             {
-                path: 'settings/applications',
+                path: 'applications',
+                guard: PrivateRoute,
                 component: AppsPage
             }
         ]

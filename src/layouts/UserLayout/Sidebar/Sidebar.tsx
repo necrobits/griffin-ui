@@ -6,16 +6,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useResponsive } from '~/hooks/responsiveness';
 
 const keyPath = {
-    profile: '/me',
-    account: '/me/settings/account',
-    applications: '/me/settings/applications'
+    profile: '',
+    account: 'account',
+    applications: 'applications'
 };
 
 const getKeyByValue = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
 };
 
-export default function Sidebar() {
+export default function Sidebar({ userId }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [selectedKeys, setSelectedKeys] = useState([getKeyByValue(keyPath, location.pathname)]);
@@ -26,7 +26,7 @@ export default function Sidebar() {
 
     const onSelect = ({ itemKey }) => {
         setSelectedKeys([itemKey]);
-        navigate(`${keyPath[itemKey]}`);
+        navigate(`/${userId}/${keyPath[itemKey]}`);
     };
 
     const navItems = (
