@@ -22,12 +22,16 @@ export default function UserProfile({ user: propUser }: Props) {
         setIsEditMode(prev => !prev);
     };
 
+    const onSubmitted = () => {
+        setIsEditMode(false);
+    };
+
     return (
         <div className={styles.profileContainer}>
             <Button className={styles.editProfileBtn} type={'tertiary'} theme={'solid'} onClick={handleEditButtonClicked}>
                 {isEditMode ? 'View profile' : 'Edit profile'}
             </Button>
-            {isEditMode ? <UserProfileForm user={user} setIsEditMode={setIsEditMode} /> : <UserDetails user={user} />}
+            {isEditMode ? <UserProfileForm user={user} onSubmitted={onSubmitted} /> : <UserDetails user={user} />}
         </div>
     );
 }

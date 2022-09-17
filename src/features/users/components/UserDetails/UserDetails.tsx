@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography, Avatar, Divider, Tag, Button } from '@douyinfe/semi-ui';
-import { useOutletContext } from 'react-router-dom';
+import { Typography, Avatar, Divider, Tag } from '@douyinfe/semi-ui';
 import { User } from '~/models';
 import { TimeManager } from '~/utils';
 import styles from './UserDetails.module.scss';

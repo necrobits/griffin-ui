@@ -182,13 +182,37 @@ const generateChangePasswordEndpoints = () => {
     return reqRes;
 };
 
+const deleteUserController = userId => req => {
+    users = users.filter(u => u.id !== parseInt(userId));
+
+    return {
+        status: 200,
+        body: {
+            message: 'User deleted'
+        }
+    };
+};
+
+const generateDeleteUserEndpoints = () => {
+    let reqRes = {};
+
+    users.forEach(user => {
+        const res = {};
+        const key = `DELETE /users/${user.id}`;
+        res[key] = deleteUserController(user.id);
+        reqRes = { ...reqRes, ...res };
+    });
+    return reqRes;
+};
+
 const usersEndpoints = {
     'GET /users': getUsersController,
     ...generateGetUserEndpoints(),
     'POST /authaccount/login': loginController,
     'GET /auth/me': getMeController,
     ...generatePatchUserEndpoints(),
-    ...generateChangePasswordEndpoints()
+    ...generateChangePasswordEndpoints(),
+    ...generateDeleteUserEndpoints()
 };
 
 export default usersEndpoints;

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Input } from '@douyinfe/semi-ui';
-import styles from './Search.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { changedInput, clearInput, enteredInput, getChangedInput } from '~/features/search';
+import { Input } from '@douyinfe/semi-ui';
 import { InputProps } from '@douyinfe/semi-ui/lib/es/input';
+import { changedInput, clearInput, enteredInput, getChangedInput } from '~/features/search';
 
 export default function Search(props: InputProps) {
     const dispatch = useDispatch();

@@ -1,19 +1,19 @@
 import React from 'react';
 import { Layout } from '@douyinfe/semi-ui';
 import styles from './UserLayout.module.scss';
+import navBarStyles from '~/theme/scss/NavBar/UserNavBar.module.scss';
 import ErrorBoundary from '~/containers/ErrorBoundary';
 
 // components
-import NavBar from './NavBar';
 import Sidebar from './Sidebar';
 import { Outlet, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getCurrentUser } from '~/features/user';
 import { useFetchUser } from '~/features/users/hooks';
+import NavBar from '~/components/NavBar';
+
+import logo from 'assets/images/logo.png';
 
 const UserLayout = () => {
     const { Header, Sider, Content } = Layout;
-    const currentUser = useSelector(getCurrentUser);
     const { userId } = useParams();
 
     const { isLoading, data: user } = useFetchUser(userId);
@@ -21,7 +21,7 @@ const UserLayout = () => {
     return (
         <Layout>
             <Header>
-                <NavBar user={currentUser} />
+                <NavBar logo={logo} styles={navBarStyles} />
             </Header>
             <div className='container'>
                 <Layout className={styles.layout}>

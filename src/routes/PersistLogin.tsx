@@ -11,7 +11,7 @@ type LocationState = {
 
 export default function PersistLogin() {
     const dispatch = useDispatch();
-    const { data, isLoading } = useGetMe();
+    const { data, isLoading, isSuccess } = useGetMe();
     const location = useLocation();
     let redirectPath = '/';
 
@@ -35,7 +35,7 @@ export default function PersistLogin() {
         );
     }
 
-    if (!isLoading) {
+    if (isSuccess) {
         dispatch(fetchedUser(data));
         return <Navigate to={redirectPath} />;
     }

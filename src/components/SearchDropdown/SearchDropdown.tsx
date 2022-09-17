@@ -1,10 +1,14 @@
-import { IconSearch } from '@douyinfe/semi-icons';
-import Title from '@douyinfe/semi-ui/lib/es/typography/title';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
-import { getChangedInput } from '../../search.selector';
-import Search from '../Search/Search';
+/* Semi */
+import { IconSearch } from '@douyinfe/semi-icons';
+import Title from '@douyinfe/semi-ui/lib/es/typography/title';
+/* Hooks */
+import { getChangedInput } from '../../features/search/search.selector';
+/* Components */
+import Search from '../../features/search/components/Search/Search';
+/* Style */
 import styles from './SearchDropdown.module.scss';
 
 export default function SearchDropdown({ components }) {

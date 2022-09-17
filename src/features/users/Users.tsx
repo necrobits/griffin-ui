@@ -1,15 +1,15 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Avatar, Breadcrumb, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
+import { Avatar, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
-import { IconArticle, IconDelete, IconHome, IconMore, IconSearch, IconUserGroup } from '@douyinfe/semi-icons';
+import { IconDelete, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
 import { User } from '~/models';
 import styles from './Users.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { TimeManager } from '~/utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearInput, getChangedInput } from '../search';
-import { Search, SearchDropdown, SearchedUsers } from '../search/components';
-import { useGetOnlineUsers, useDeleteUser, useFetchUsers } from './hooks';
+import { useDispatch } from 'react-redux';
+import { clearInput } from '../search';
+import { useGetOnlineUsers, useFetchUsers } from './hooks';
+import ConfirmDeleteModal from './components/ConfirmDeleteModal';
 
 const { Text, Title } = Typography;
 
@@ -59,10 +59,10 @@ export default function Users() {
     const [total, setTotal] = useState(0);
     const [dataSource, setDataSource]: [User[], Dispatch<SetStateAction<User[]>>] = useState([]);
     const [isTableLoading, setIsTableLoading] = useState(true);
-    const onlineUsers = useGetOnlineUsers();
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-    const { data, isLoading: isUsersLoading } = useFetchUsers({ pageSize: PAGE_SIZE, page: currentPage });
-    const { mutate: deleteUser, isLoading: isDeleteLoading } = useDeleteUser();
+    const onlineUsers = useGetOnlineUsers();
+    const { data, isLoading: isUsersLoading, refetch, isRefetching } = useFetchUsers({ pageSize: PAGE_SIZE, page: currentPage });
 
     useEffect(() => {
         return () => {
@@ -71,8 +71,8 @@ export default function Users() {
     }, []);
 
     useEffect(() => {
-        setIsTableLoading(isDeleteLoading || isUsersLoading);
-    }, [isDeleteLoading, isUsersLoading]);
+        setIsTableLoading(isRefetching || isUsersLoading);
+    }, [isRefetching, isUsersLoading]);
 
     useEffect(() => {
         if (!isUsersLoading) {
@@ -80,6 +80,24 @@ export default function Users() {
             setDataSource(data ? data.results : []);
         }
     }, [data]);
+
+    const handleDelete = () => {
+        setDeleteModalVisible(true);
+    };
+
+    const handlePageChange = page => {
+        setCurrentPage(page);
+    };
+
+    const getOnlinePercent = () => {
+        const percent = (onlineUsers / total) * 100;
+        return percent;
+    };
+
+    const onHide = () => {
+        setDeleteModalVisible(false);
+        refetch();
+    };
 
     const columns = [
         {
@@ -149,16 +167,19 @@ export default function Users() {
                         trigger='click'
                         position='bottomLeft'
                         render={
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => navigate(`/admin/users/${record.id}`)}>
-                                    <IconMore />
-                                    Details
-                                </Dropdown.Item>
-                                <Dropdown.Item style={{ color: 'red' }} onClick={() => handleDelete(`${record.id}`)}>
-                                    <IconDelete />
-                                    Delete
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
+                            <>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => navigate(`/admin/users/${record.id}`)}>
+                                        <IconMore />
+                                        Details
+                                    </Dropdown.Item>
+                                    <Dropdown.Item style={{ color: 'red' }} onClick={handleDelete}>
+                                        <IconDelete />
+                                        Delete
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                                <ConfirmDeleteModal user={record} onHide={onHide} visible={deleteModalVisible} />
+                            </>
                         }>
                         <Button icon={<IconMore />}></Button>
                     </Dropdown>
@@ -191,19 +212,6 @@ export default function Users() {
             <div style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}></div>
         </div>
     );
-
-    const handleDelete = (userId: string) => {
-        deleteUser(userId);
-    };
-
-    const handlePageChange = page => {
-        setCurrentPage(page);
-    };
-
-    const getOnlinePercent = () => {
-        const percent = (onlineUsers / total) * 100;
-        return percent;
-    };
 
     return (
         <Skeleton placeholder={placeholder} loading={isTableLoading}>

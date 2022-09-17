@@ -1,12 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { List, Skeleton, Avatar, Tag } from '@douyinfe/semi-ui';
 import Title from '@douyinfe/semi-ui/lib/es/typography/title';
-import { useNavigate } from 'react-router-dom';
 import { User } from '~/models';
+import { clearInput } from '../../search.action';
 import { useFetchUsers } from '../../../users/hooks/useFetchUsers';
 import styles from './SearchedUsers.module.scss';
-import { useDispatch } from 'react-redux';
-import { clearInput } from '../../search.action';
 
 type Props = {
     input: string;

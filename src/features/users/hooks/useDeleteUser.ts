@@ -4,6 +4,6 @@ import { useApi } from '~/hooks';
 import { User } from '~/models';
 import { deleteUser, ErrorResponse } from '~/services';
 
-export const useDeleteUser = (config?: UseMutationOptions<User, ErrorResponse, unknown>) => {
-    return useApi<User, unknown>(deleteUser, ['users'], null, config);
+export const useDeleteUser = (userId: string, config?: UseMutationOptions<User, ErrorResponse, unknown>) => {
+    return useApi<User, unknown>(deleteUser, ['users', userId], null, config);
 };
