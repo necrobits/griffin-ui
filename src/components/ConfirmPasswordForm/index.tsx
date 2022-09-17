@@ -8,8 +8,12 @@ type Props = {
     placeholderConfirmPassword?: string;
     noMatchingText?: string;
 };
+
 export default function ConfirmationPasswordForm({ labelPassword, labelConfirmPassword, placeholderPassword, placeholderConfirmPassword, noMatchingText }: Props) {
     const validateConfirmPassword = (val, values) => {
+        if (!val) {
+            return 'This field should not be empty';
+        }
         if (values.password !== val) {
             return noMatchingText || 'Password does not match';
         }

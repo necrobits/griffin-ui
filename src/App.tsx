@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react';
-import '~/App.scss';
 import MainRoutes from '~/routes';
 
 function App() {

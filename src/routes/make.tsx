@@ -29,14 +29,15 @@ const makeRoute = (route: IRoute, id: string) => {
     }
 
     const guard = <Guard requiredRoles={requiredRoles} component={component} {...propsGuard} />;
+
     if (route.routes && route.routes.length > 0) {
         return (
             <Route key={`routes-${id}`} {...opts} element={guard}>
                 {route.routes
                     ? makeRoutes(
-                        route.routes.map(r => ({ guard: route.guard, ...r })),
-                        id
-                    )
+                          route.routes.map(r => ({ guard: route.guard, ...r })),
+                          id
+                      )
                     : null}
             </Route>
         );

@@ -10,10 +10,17 @@ type Props = {
     requiredRoles?: string[] | [];
 };
 
+type LocationState = {
+    redirectPath?: string;
+};
+
 const PublicRoute = ({ component: RouteComponent, redirectPath }: Props) => {
+    const location = useLocation();
+    if (location.state && (location.state as LocationState).redirectPath) {
+        return <RouteComponent />;
+    }
     const isAuthing = useSelector(isAuthingUser);
     const user = useSelector(getCurrentUser);
-    const location = useLocation();
 
     if (isAuthing) {
         return (
@@ -40,7 +47,7 @@ const PublicRoute = ({ component: RouteComponent, redirectPath }: Props) => {
 
             return <Navigate to={to} state={{ replace: true }} />;
         } else if (location.pathname === '/login' || location.pathname === '/signup') {
-            return <Navigate to='/' />;
+            return <Navigate to={'/'} />;
         } else if (redirectPath) {
             return <Navigate to={redirectPath} state={{ replace: true }} />;
         }

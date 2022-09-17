@@ -1,49 +1,115 @@
-import { Skeleton, Typography, Avatar, Divider, Button } from '@douyinfe/semi-ui';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'
-import {useDevLoading} from '~/hooks/devHooks';
+import React from 'react';
+import { Typography, Avatar, Divider, Tag } from '@douyinfe/semi-ui';
 import { User } from '~/models';
 import { TimeManager } from '~/utils';
-import { useFetchUser } from '../../hooks';
-import './UserDetails.scss';
+import styles from './UserDetails.module.scss';
 
 const { Title, Text } = Typography;
 
-export default function UserDetails() {
-  const {userId} = useParams();
-  const { isLoading, isError, data, error } = useFetchUser(userId);
-  const devLoading = useDevLoading();
-  console.log(data);
+type Props = {
+    user: User;
+};
 
-  let content = (!isLoading && !isError) && (
-    <div className='content'>
-      <div className='content-header'>
-        <div className='ava-group'>
-          <Avatar src={data?.avatar}/>
-          <Title>{User.getFullName(data)}</Title>
+export default function UserDetails({ user }: Props) {
+    return (
+        <div className={styles.content}>
+            <div className={styles.contentHeader}>
+                <Avatar className={styles.avatar} src={user.avatar}>
+                    {user.avatar ? '' : User.getShortName(user.firstName, user.lastName)}
+                </Avatar>
+                <div className={styles.nameGroup}>
+                    <Title heading={1}>{User.getFullName(user)}</Title>
+                    <Text type={'quaternary'}>Joined since {TimeManager.formatFromISO(user.createdAt, 'MMMM dd, yyyy')}</Text>
+                </div>
+                {user.roles.map(role => (
+                    <Tag key={user.id} type={'solid'}>
+                        {role}
+                    </Tag>
+                ))}
+            </div>
+            <div className={styles.contentBody}>
+                <Divider margin={'1rem'} align={'left'}>
+                    Basic information
+                </Divider>
+                <div className={styles.section}>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            First name
+                        </Title>
+                        <Text>{user.firstName}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Last name
+                        </Title>
+                        <Text>{user.lastName}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Gender
+                        </Title>
+                        <Text>{user.gender}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Date of birth
+                        </Title>
+                        <Text>{TimeManager.formatFromDate(TimeManager.startOfDateFromStr(user.birthDate), 'MMMM dd, yyyy')}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Nation
+                        </Title>
+                        <Text>{user.nationality}</Text>
+                    </div>
+                </div>
+                <Divider margin={'1rem'} align={'left'}>
+                    Contact
+                </Divider>
+                <div className={styles.section}>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Email
+                        </Title>
+                        <Text>{user.email}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Phone number
+                        </Title>
+                        <Text>{user.phoneNumber}</Text>
+                    </div>
+                </div>
+                <Divider margin={'1rem'} align={'left'}>
+                    Address
+                </Divider>
+                <div className={styles.section}>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Street
+                        </Title>
+                        <Text>{user.address.street}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Postal code
+                        </Title>
+                        <Text>{user.address.post}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            City
+                        </Title>
+                        <Text>{user.address.city}</Text>
+                    </div>
+                    <div className={styles.item}>
+                        <Title heading={6} className={styles.title}>
+                            Country
+                        </Title>
+                        <Text>{user.address.country}</Text>
+                    </div>
+                </div>
+            </div>
         </div>
-        <Text style={{ color: '#aaa'}}>Last online: {TimeManager.formatFromISO(data.lastOnline, 'HH:mm dd.MM.yyyy')}</Text>
-      </div>
-      <Divider margin={'1rem'} />
-      <div className='content-body'>
-        <Text>Email: {data.email}</Text>
-        <Text>Roles: {data.roles}</Text>
-      </div>
-    </div>  
-  )
-
-  const placeholder = (
-    <div className='placeholder'>
-      <Skeleton.Avatar />
-      <Skeleton.Title />
-      <Skeleton.Paragraph rows={2}/>
-      <Skeleton.Paragraph rows={2}/>
-    </div>
-  )
-
-  return (
-    <Skeleton placeholder={placeholder} loading={devLoading}>
-        {content}
-    </Skeleton>
-  );
+    );
 }

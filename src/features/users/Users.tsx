@@ -1,98 +1,194 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Dropdown, Empty, Skeleton, Table, Typography } from '@douyinfe/semi-ui';
-import { getResultsFromInfiniteFetch } from '~/hooks';
-import { useFetchUsersInfinite } from '~/features/users/hooks';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Avatar, Button, Dropdown, Empty, Progress, Skeleton, Table, Tag, Typography } from '@douyinfe/semi-ui';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
-import { IconDelete, IconMore } from '@douyinfe/semi-icons';
+import { IconDelete, IconMore, IconUserGroup } from '@douyinfe/semi-icons';
 import { User } from '~/models';
-import './Users.scss';
+import styles from './Users.module.scss';
 import { useNavigate } from 'react-router-dom';
-import {useDevLoading} from '~/hooks/devHooks/';
 import { TimeManager } from '~/utils';
+import { useDispatch } from 'react-redux';
+import { clearInput } from '../search';
+import { useGetOnlineUsers, useFetchUsers } from './hooks';
+import ConfirmDeleteModal from './components/ConfirmDeleteModal';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
+
+const PAGE_SIZE = 7;
+const TABLE_PROPS = {
+    name: {
+        title: 'Name',
+        dataIndex: 'name',
+        width: 200
+    },
+    email: {
+        title: 'Email',
+        dataIndex: 'email',
+        width: 300
+    },
+    username: {
+        title: 'Username',
+        dataIndex: 'username',
+        width: 200
+    },
+    roles: {
+        title: 'Roles',
+        dataIndex: 'roles',
+        width: 100
+    },
+    isActive: {
+        title: 'Active',
+        dataIndex: 'isActive',
+        width: 100
+    },
+    lastOnline: {
+        title: 'Last active on',
+        dataIndex: 'lastOnline',
+        width: 200
+    },
+    more: {
+        title: '',
+        dataIndex: 'operate'
+    }
+};
 
 export default function Users() {
     const navigate = useNavigate();
-    const { fetching, error, data } = useFetchUsersInfinite();
-    const dataSource = data ? getResultsFromInfiniteFetch(data) : [];
-    const devLoading = useDevLoading();
-    console.log(data);
+    const dispatch = useDispatch();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const [dataSource, setDataSource]: [User[], Dispatch<SetStateAction<User[]>>] = useState([]);
+    const [isTableLoading, setIsTableLoading] = useState(true);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+    const onlineUsers = useGetOnlineUsers();
+    const { data, isLoading: isUsersLoading, refetch, isRefetching } = useFetchUsers({ pageSize: PAGE_SIZE, page: currentPage });
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearInput());
+        };
+    }, []);
+
+    useEffect(() => {
+        setIsTableLoading(isRefetching || isUsersLoading);
+    }, [isRefetching, isUsersLoading]);
+
+    useEffect(() => {
+        if (!isUsersLoading) {
+            setTotal(data.total);
+            setDataSource(data ? data.results : []);
+        }
+    }, [data]);
+
+    const handleDelete = () => {
+        setDeleteModalVisible(true);
+    };
+
+    const handlePageChange = page => {
+        setCurrentPage(page);
+    };
+
+    const getOnlinePercent = () => {
+        const percent = (onlineUsers / total) * 100;
+        return percent;
+    };
+
+    const onHide = () => {
+        setDeleteModalVisible(false);
+        refetch();
+    };
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            ...TABLE_PROPS.name,
             sorter: (a: User, b: User) => User.getFullName(a).localeCompare(User.getFullName(b)),
-            width: 300,
             render: (text, record: User, index) => {
                 return (
-                    <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar size="small" src={record.avatar} style={{ marginRight: 12 }}></Avatar>
-                        {/* The width calculation method is the cell setting width minus the non-text content width */}
-                        <Text ellipsis={{ showTooltip: true }} style={{ width: 'calc(300px - 76px)' }}>
+                    <div className={styles.colNameRec}>
+                        <Avatar size='small' color='lime' src={record.avatar} style={{ marginRight: 12 }}>
+                            {User.getShortName(record.firstName, record.lastName)}
+                        </Avatar>
+                        <Text ellipsis={{ showTooltip: true }} style={{ width: `calc(${TABLE_PROPS.name.width}px - 76px)` }}>
                             {User.getFullName(record)}
                         </Text>
-                    </span>
+                    </div>
                 );
             }
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            width: 400,
+            ...TABLE_PROPS.email,
             sorter: (a: User, b: User) => a.email.localeCompare(b.email)
         },
         {
-            title: 'Roles',
-            dataIndex: 'roles',
-            width: 200,
+            ...TABLE_PROPS.username,
+            sorter: (a: User, b: User) => a.username.localeCompare(b.username)
+        },
+        {
+            ...TABLE_PROPS.roles,
             render: (text, record: User, index) => {
-                const rolesTxt = record.roles.join(' | ');
-                return rolesTxt;
+                const colors = {
+                    Admin: 'red',
+                    User: 'green'
+                };
+                const item = record.roles.map(role => (
+                    <Tag key={role} color={colors[role]}>
+                        {role}
+                    </Tag>
+                ));
+                return item;
             }
         },
         {
-            title: 'Last active on',
-            dataIndex: 'lastOnline',
-            width: 300,
+            ...TABLE_PROPS.lastOnline,
             sorter: (a: User, b: User) => {
                 const time_a = new Date(a.lastOnline);
                 const time_b = new Date(b.lastOnline);
-                return (time_a > time_b) ? -1 : (time_a == time_b) ? 0 : 1;
+                return time_a > time_b ? -1 : time_a == time_b ? 0 : 1;
             },
             render: (text, record, index) => TimeManager.formatFromISO(text, 'HH:mm dd.MM.yyyy')
         },
         {
-            title: '',
-            dataIndex: 'operate',
+            ...TABLE_PROPS.isActive,
+            render: (isActive, record, index) => {
+                const item = (
+                    <Tag key={isActive} color={isActive ? 'green' : 'grey'}>
+                        {isActive ? 'online' : 'offline'}
+                    </Tag>
+                );
+                return item;
+            }
+        },
+        {
+            ...TABLE_PROPS.more,
             render: (text, record: User) => {
                 return (
                     <Dropdown
                         trigger='click'
                         position='bottomLeft'
                         render={
-                            (<Dropdown.Menu>
-                                <Dropdown.Item onClick={() => navigate(`/users/${record.id}`)}><IconMore />Details</Dropdown.Item>
-                                <Dropdown.Item style={{ color: 'red' }}><IconDelete />Delete</Dropdown.Item>
-                            </Dropdown.Menu>)
-                        }
-                    >
+                            <>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => navigate(`/admin/users/${record.id}`)}>
+                                        <IconMore />
+                                        Details
+                                    </Dropdown.Item>
+                                    <Dropdown.Item style={{ color: 'red' }} onClick={handleDelete}>
+                                        <IconDelete />
+                                        Delete
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                                <ConfirmDeleteModal user={record} onHide={onHide} visible={deleteModalVisible} />
+                            </>
+                        }>
                         <Button icon={<IconMore />}></Button>
                     </Dropdown>
-                )
+                );
             }
-        },
+        }
     ];
 
-    const resetData = () => console.log('Reset users');
-    const empty = (
-        <Empty
-            image={<IllustrationNoResult />}
-            darkModeImage={<IllustrationNoResultDark />}
-            description={'No result'}
-        />
-    );
+    const empty = <Empty image={<IllustrationNoResult />} darkModeImage={<IllustrationNoResultDark />} description={'No result'} />;
 
     const skData = {
         columns: ['a', 'b', 'c'].map(i => {
@@ -101,32 +197,65 @@ export default function Users() {
             return { title, dataIndex };
         }),
         dataSource: [1, 2, 3, 4].map(key => {
-            const item: {[key: string]: any} = {};
+            const item: { [key: string]: any } = {};
             item.key = key;
             ['a', 'b', 'c'].forEach(i => {
                 item[i] = <Skeleton.Paragraph style={{ width: 100 }} rows={1} />;
             });
             return item;
-        }),
+        })
     };
 
     const placeholder = (
         <div style={{ position: 'relative' }}>
-            <Table
-                style={{ backgroundColor: 'var(--semi-color-bg-1)' }}
-                columns={skData.columns}
-                dataSource={skData.dataSource}
-                pagination={false}
-            />
+            <Table style={{ backgroundColor: 'var(--semi-color-bg-1)' }} columns={skData.columns} dataSource={skData.dataSource} pagination={false} />
             <div style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}></div>
         </div>
     );
 
-
     return (
-        <Skeleton placeholder={placeholder} loading={devLoading}>
-            <Table className='table-users' columns={columns} dataSource={dataSource} pagination={true} empty={empty} />
+        <Skeleton placeholder={placeholder} loading={isTableLoading}>
+            <div className={styles.header}>
+                <div className={styles.headerText}>
+                    <IconUserGroup className={styles.headerIcon} size='extra-large' />
+                    <Title className={styles.headerTitle} heading={3}>
+                        Users Management
+                    </Title>
+                </div>
+                <div className={styles.asside}>
+                    <Progress
+                        percent={getOnlinePercent()}
+                        width={90}
+                        orbitStroke={'var(--semi-color-tertiary)'}
+                        strokeWidth={5}
+                        type='circle'
+                        showInfo
+                        format={per => (
+                            <div className={styles.progressInfo}>
+                                <Title heading={4}>{total}</Title>
+                                <Text>Total users</Text>
+                            </div>
+                        )}
+                        aria-label='active-users'
+                    />
+                    <ul className={styles.progressNotes}>
+                        <li className={styles.active}>Active users: {onlineUsers}</li>
+                        <li className={styles.inactive}>Inactive users: {total - onlineUsers}</li>
+                    </ul>
+                </div>
+            </div>
+            <Table
+                className={styles.table}
+                columns={columns}
+                dataSource={dataSource}
+                pagination={{
+                    currentPage,
+                    pageSize: PAGE_SIZE,
+                    total,
+                    onPageChange: handlePageChange
+                }}
+                empty={empty}
+            />
         </Skeleton>
-        
     );
 }

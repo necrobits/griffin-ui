@@ -10,26 +10,6 @@ export default function Example() {
                 d.push(r.body);
             })
         );
-        Go.get('/clients').then(r =>
-            setRes(d => {
-                d.push(r.body);
-            })
-        );
-        Go.get('/users/1').then(r =>
-            setRes(d => {
-                d.push(r.body);
-            })
-        );
-        Go.get('/clients/1').then(r =>
-            setRes(d => {
-                d.push(r.body);
-            })
-        );
-        Go.post('/users').then(r =>
-            setRes(d => {
-                d.push(r.body);
-            })
-        );
     }, []);
     return (
         <div>

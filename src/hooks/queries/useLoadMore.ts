@@ -16,9 +16,9 @@ export function useLoadMore<T, Input>(
         {
             ...config,
             structuralSharing: false,
-            getPreviousPageParam: firstPage => firstPage.previousId ?? undefined,
+            getPreviousPageParam: firstPage => firstPage.pagination.prev ?? undefined,
             getNextPageParam: lastPage => {
-                return lastPage.nextId ?? undefined;
+                return lastPage.pagination.next ?? undefined;
             }
         }
     );

@@ -1,0 +1,12 @@
+.layout {
+    width: 100%;
+    display: flex;
+    column-gap: 2rem;
+
+    .content {
+        background-color: #ffffff8a;
+        padding: 2rem;
+        border-radius: 30px;
+        box-shadow: 0 0 1px #aaa;
+    }
+}

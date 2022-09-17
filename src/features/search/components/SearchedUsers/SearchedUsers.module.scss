@@ -1,0 +1,17 @@
+.listITem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+
+    .left {
+        display: flex;
+        align-items: center;
+        column-gap: 1rem;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ccc;
+    }
+}
