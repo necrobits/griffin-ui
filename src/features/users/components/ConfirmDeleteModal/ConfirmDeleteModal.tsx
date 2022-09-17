@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Spin, Typography } from '@douyinfe/semi-ui';
 import { User } from '~/models';
 import { useDeleteUser } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -11,6 +12,7 @@ type Props = {
 
 export default function ConfirmDeleteModal({ user, onHide: hide, visible }) {
     const userId = user.id.toString();
+    const navigate = useNavigate();
 
     const [errMsg, setErrMsg] = useState('');
 
@@ -20,6 +22,7 @@ export default function ConfirmDeleteModal({ user, onHide: hide, visible }) {
         deleteUser(userId, {
             onSuccess: () => {
                 hide();
+                navigate('/admin/users');
             },
             onError: () => {
                 setErrMsg(error.message);
