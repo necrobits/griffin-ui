@@ -1,17 +1,41 @@
-.content {
-    width: 100%;
-    height: calc(100vh - 80px - 4rem);
-    overflow-y: auto;
+@use '../../theme/scss/media' as media;
 
-    .dash {
-        width: 80%;
-        margin: 2rem auto;
-        display: flex;
-        flex-direction: column;
-        row-gap: 2rem;
-        background-color: #ffffff8a;
-        padding: 2rem;
-        border-radius: 50px;
-        box-shadow: 0 0 1px #aaa;
+.layout {
+    .content {
+        width: 100%;
+        height: calc(100vh - 80px - 4rem);
+        overflow-y: auto;
+
+        .dash {
+            width: 80%;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            row-gap: 2rem;
+            background-color: #ffffff8a;
+            padding: 2rem;
+            border-radius: 50px;
+            box-shadow: 0 0 1px #aaa;
+
+            @include media.mobile-and-tablet {
+                width: 100%;
+                margin: 0 0.5rem;
+            }
+        }
+    }
+
+    .sider {
+        @include media.mobile-and-tablet {
+            height: fit-content;
+            width: 100%;
+        }
+    }
+}
+
+:global(.semi-layout-has-sider) {
+    @include media.mobile-and-tablet {
+        &.layout {
+            flex-direction: column;
+        }
     }
 }

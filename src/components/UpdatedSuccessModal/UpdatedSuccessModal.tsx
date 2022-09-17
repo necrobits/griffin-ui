@@ -16,6 +16,7 @@ export default function UpdatedSuccessModal({ visible, onClose: close }) {
             visible={visible}
             onOk={handleOk}
             onCancel={handleCancel}
+            width={'fit-content'}
             footer={
                 <Button type={'tertiary'} onClick={handleOk}>
                     Close

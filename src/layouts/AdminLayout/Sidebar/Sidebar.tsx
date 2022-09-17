@@ -4,6 +4,7 @@ import { IconDesktop, IconUserGroup } from '@douyinfe/semi-icons';
 import styles from './Sidebar.module.scss';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
+import { useResponsive } from '~/hooks/responsiveness';
 
 const keyPath = {
     users: '/admin/users',
@@ -15,6 +16,8 @@ const getKeyByValue = (object, value) => {
 };
 
 export default function Sidebar() {
+    const { isDesktop } = useResponsive();
+
     const navigate = useNavigate();
     const location = useLocation();
     const isPathOnNav = Object.values(keyPath).includes(location.pathname);
@@ -37,12 +40,14 @@ export default function Sidebar() {
     };
 
     return (
-        <Nav selectedKeys={selectedKeys} className={styles.sideNav} onSelect={onSelect}>
-            <Nav.Header>
-                <Link to={'/'}>
-                    <img src={logo} width={'150px'} />
-                </Link>
-            </Nav.Header>
+        <Nav selectedKeys={selectedKeys} className={styles.sideNav} onSelect={onSelect} mode={isDesktop ? 'vertical' : 'horizontal'}>
+            {isDesktop && (
+                <Nav.Header>
+                    <Link to={'/'}>
+                        <img src={logo} width={'150px'} />
+                    </Link>
+                </Nav.Header>
+            )}
             {manageItems}
         </Nav>
     );

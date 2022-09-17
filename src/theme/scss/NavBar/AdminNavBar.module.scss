@@ -1,3 +1,5 @@
+@use '../media' as media;
+
 :global(.semi-layout-header) {
     & > .navBar {
         width: 100%;

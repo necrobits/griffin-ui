@@ -1,4 +1,26 @@
+@use '../../../theme/scss/media' as media;
+
 .sideNav {
-    background-color: transparent;
     height: 100%;
+    background-color: transparent;
+
+    @include media.mobile-and-tablet {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: fit-content;
+        min-height: 80px;
+        width: 100%;
+
+        :global(.semi-navigation-inner) {
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        & :global(.semi-navigation-list) {
+            height: fit-content;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
 }

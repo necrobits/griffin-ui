@@ -10,28 +10,53 @@ import Sidebar from './Sidebar';
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from '~/features/user';
 import NavBar from '~/components/NavBar';
+import { useResponsive } from '~/hooks/responsiveness';
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
+    const { isDesktop, isTablet } = useResponsive();
+
+    const desktopLayout = (
+        <>
+            <Sider className={styles.sider}>
+                <Sidebar />
+            </Sider>
+            <Layout>
+                <Header className={styles.header}>
+                    <NavBar styles={navBarStyles} />
+                </Header>
+                <Content className={styles.content}>
+                    <div className={styles.dash}>
+                        <ErrorBoundary>
+                            <Outlet />
+                        </ErrorBoundary>
+                    </div>
+                </Content>
+            </Layout>
+        </>
+    );
+
+    const tabletLayout = (
+        <>
+            <Header className={styles.header}>
+                <NavBar styles={navBarStyles} />
+            </Header>
+            <Sider className={styles.sider}>
+                <Sidebar />
+            </Sider>
+            <Content className={styles.content}>
+                <div className={styles.dash}>
+                    <ErrorBoundary>
+                        <Outlet />
+                    </ErrorBoundary>
+                </div>
+            </Content>
+        </>
+    );
+
     return (
         <>
-            <Layout>
-                <Sider>
-                    <Sidebar />
-                </Sider>
-                <Layout>
-                    <Header>
-                        <NavBar styles={navBarStyles} />
-                    </Header>
-                    <Content className={styles.content}>
-                        <div className={styles.dash}>
-                            <ErrorBoundary>
-                                <Outlet />
-                            </ErrorBoundary>
-                        </div>
-                    </Content>
-                </Layout>
-            </Layout>
+            <Layout className={styles.layout}>{isDesktop ? desktopLayout : tabletLayout}</Layout>
         </>
     );
 };
