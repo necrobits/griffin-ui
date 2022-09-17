@@ -5,8 +5,10 @@ import _ from 'lodash';
 import ConfirmationPasswordForm from '~/components/ConfirmPasswordForm';
 import UpdatedSuccessModal from '~/components/UpdatedSuccessModal';
 import { useChangePassword } from '../../hooks/useChangePassword';
+import { useResponsive } from '~/hooks/responsiveness';
 
 export default function ChangePassword({ visible, userId, onClose: close }) {
+    const { isMobile } = useResponsive();
     const [formValues, setFormValues] = useState({
         oldPwd: '',
         password: ''
@@ -68,11 +70,9 @@ export default function ChangePassword({ visible, userId, onClose: close }) {
             onCancel={handleCancel}
             okText={'Change password'}
             cancelText={'Cancel'}
+            width={'fit-content'}
             footer={
                 <>
-                    <Button type={'tertiary'} onClick={handleCancel}>
-                        Close
-                    </Button>
                     <Button type={'primary'} onClick={handleOk} disabled={changeBtnDisabled}>
                         Change password
                     </Button>
@@ -81,8 +81,8 @@ export default function ChangePassword({ visible, userId, onClose: close }) {
             <Spin spinning={isLoading} style={{ width: '100%' }}>
                 <Text type={'danger'}>{errMsg}</Text>
                 <Form labelPosition='left' labelWidth={200} onValueChange={handleForm}>
-                    <Form.Input type={'password'} field='oldPwd' label={'Old password'} />
-                    <ConfirmationPasswordForm labelPassword='New password' labelConfirmPassword='Confirm new password' />
+                    <Form.Input type={'password'} field='oldPwd' label={'Old password'} labelPosition={isMobile ? 'top' : 'left'} />
+                    <ConfirmationPasswordForm labelPassword='New password' labelConfirmPassword='Confirm new password' labelPosition={isMobile ? 'top' : 'left'} />
                 </Form>
                 <UpdatedSuccessModal visible={successVisible} onClose={handleSuccessClosed} />
             </Spin>

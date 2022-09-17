@@ -1,3 +1,18 @@
+@use '../../../theme/scss/media' as media;
+
 .sideNav {
     height: 100vh;
+
+    @include media.mobile-and-tablet {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        width: 100%;
+
+        :global(.semi-navigation-inner) {
+            justify-content: space-around;
+            align-items: center;
+        }
+    }
 }

@@ -9,23 +9,25 @@ import Sidebar from './Sidebar';
 import { Outlet, useParams } from 'react-router-dom';
 import { useFetchUser } from '~/features/users/hooks';
 import NavBar from '~/components/NavBar';
-
 import logo from 'assets/images/logo.png';
+import { useResponsive } from '~/hooks/responsiveness';
+
+const { Header, Sider, Content } = Layout;
 
 const UserLayout = () => {
-    const { Header, Sider, Content } = Layout;
+    const { isDesktop } = useResponsive();
     const { userId } = useParams();
 
     const { isLoading, data: user } = useFetchUser(userId);
 
-    return (
-        <Layout>
+    const content = isDesktop ? (
+        <>
             <Header>
                 <NavBar logo={logo} styles={navBarStyles} />
             </Header>
             <div className='container'>
                 <Layout className={styles.layout}>
-                    <Sider>
+                    <Sider className={styles.sider}>
                         <Sidebar userId={userId} />
                     </Sider>
                     <Content className={styles.content}>
@@ -33,8 +35,22 @@ const UserLayout = () => {
                     </Content>
                 </Layout>
             </div>
-        </Layout>
+        </>
+    ) : (
+        <>
+            <Header>
+                <NavBar logo={logo} styles={navBarStyles} />
+            </Header>
+            <Sider className={styles.sider}>
+                <Sidebar userId={userId} />
+            </Sider>
+            <Content className={styles.content}>
+                <ErrorBoundary>{isLoading ? <p>Loading ...</p> : <Outlet context={user} />}</ErrorBoundary>
+            </Content>
+        </>
     );
+
+    return <Layout className={styles.layout}>{content}</Layout>;
 };
 
 export default UserLayout;

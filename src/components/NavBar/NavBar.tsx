@@ -19,7 +19,7 @@ export default function NavBar({ logo, styles }: Props) {
                 )}
                 <div className={styles.content} id='navbarHeader-content'></div>
             </Nav.Header>
-            <Nav.Footer>
+            <Nav.Footer className={styles.footer}>
                 <NavbarFooter />
             </Nav.Footer>
         </Nav>

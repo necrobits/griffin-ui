@@ -7,6 +7,7 @@ import styles from '../UserForm.module.scss';
 import { usePatchUser } from '../../hooks/usePatchUser';
 import UpdatedSuccessModal from '~/components/UpdatedSuccessModal';
 import ErrorMessage from '@douyinfe/semi-ui/lib/es/form/errorMessage';
+import { useResponsive } from '~/hooks/responsiveness';
 
 type Props = {
     user: User;
@@ -17,6 +18,7 @@ export default function UserProfileForm({ user, onSubmitted: submitted }: Props)
     const { isLoading, mutate: patchUser, error } = usePatchUser(`${user.id}`);
     const [successVisible, setSuccessVisible] = useState(false);
     const [formBirthDate, setFormBirthDate] = useState(user.birthDate);
+    const { isDesktop } = useResponsive();
 
     const avatar = (
         <Avatar className={styles.avatar} src={user.avatar ? user.avatar : null}>
@@ -58,9 +60,15 @@ export default function UserProfileForm({ user, onSubmitted: submitted }: Props)
             <Spin spinning={isLoading} style={{ width: '100%' }}>
                 <Form className={styles.formBody} labelPosition='left' labelWidth={200} onSubmit={handleSubmit}>
                     {!!error && <ErrorMessage error={`${error.statusCode}: ${error.message}`} />}
-                    <Form.Input className={styles.formInput} field='firstName' label='First name' initValue={user.firstName} />
-                    <Form.Input className={styles.formInput} field='lastName' label='Last name' initValue={user.lastName} />
-                    <Form.Select field='gender' className={styles.formSelect} label='Gender' placeholder='Choose gender' initValue={user.gender}>
+                    <Form.Input labelPosition={isDesktop ? 'left' : 'top'} className={styles.formInput} field='firstName' label='First name' initValue={user.firstName} />
+                    <Form.Input labelPosition={isDesktop ? 'left' : 'top'} className={styles.formInput} field='lastName' label='Last name' initValue={user.lastName} />
+                    <Form.Select
+                        field='gender'
+                        className={styles.formSelect}
+                        label='Gender'
+                        placeholder='Choose gender'
+                        initValue={user.gender}
+                        labelPosition={isDesktop ? 'left' : 'top'}>
                         <Select.Option value='Female'>
                             <IconFemale />
                             &nbsp;Female
@@ -74,9 +82,15 @@ export default function UserProfileForm({ user, onSubmitted: submitted }: Props)
                             &nbsp;Other
                         </Select.Option>
                     </Form.Select>
-                    <Form.DatePicker field='birthDate' label='Birthday (YYYY-MM-DD)' initValue={formBirthDate} onChange={handleBirthDate} />
-                    <Form.Input className={styles.formInput} field='nationality' label='Nation' initValue={user.nationality} />
-                    <Form.Slot className={styles.formGroup} label='Address'>
+                    <Form.DatePicker
+                        field='birthDate'
+                        label='Birthday (YYYY-MM-DD)'
+                        initValue={formBirthDate}
+                        onChange={handleBirthDate}
+                        labelPosition={isDesktop ? 'left' : 'top'}
+                    />
+                    <Form.Input labelPosition={isDesktop ? 'left' : 'top'} className={styles.formInput} field='nationality' label='Nation' initValue={user.nationality} />
+                    <Form.Slot className={styles.formGroup} label='Address' labelPosition={isDesktop ? 'left' : 'top'}>
                         <div className={styles.formAddress}>
                             <div className={styles.addressGroup}>
                                 <Form.Input className={styles.formAddressInput} field='street' label='Street' labelPosition={'inset'} initValue={user.address.street} />
@@ -88,7 +102,7 @@ export default function UserProfileForm({ user, onSubmitted: submitted }: Props)
                             </div>
                         </div>
                     </Form.Slot>
-                    <Form.Input className={styles.formInput} field='phoneNumber' label='Phone number' initValue={user.phoneNumber} />
+                    <Form.Input labelPosition={isDesktop ? 'left' : 'top'} className={styles.formInput} field='phoneNumber' label='Phone number' initValue={user.phoneNumber} />
                     <Button className={styles.formSaveBtn} htmlType={'submit'} type={'primary'} theme={'solid'}>
                         Save changes
                     </Button>

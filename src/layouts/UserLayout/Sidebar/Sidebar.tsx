@@ -16,6 +16,7 @@ const getKeyByValue = (object, value) => {
 };
 
 export default function Sidebar({ userId }) {
+    const { isDesktop } = useResponsive();
     const location = useLocation();
     const navigate = useNavigate();
     const [selectedKeys, setSelectedKeys] = useState([getKeyByValue(keyPath, location.pathname)]);
@@ -37,7 +38,7 @@ export default function Sidebar({ userId }) {
         </>
     );
     return (
-        <Nav selectedKeys={selectedKeys} className={styles.sideNav} onSelect={onSelect}>
+        <Nav selectedKeys={selectedKeys} className={styles.sideNav} onSelect={onSelect} mode={isDesktop ? 'vertical' : 'horizontal'}>
             {navItems}
         </Nav>
     );
