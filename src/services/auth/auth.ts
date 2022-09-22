@@ -2,7 +2,7 @@ import { LStorage } from '~/storage';
 import { AUTH_TOKEN } from '~/constants';
 import { User } from '~/models/user';
 import Go from '~/global/gobits';
-import { AuthSignInInput, AuthSignUpInput } from '~/services';
+import { AuthSignInInput, AuthSignUpInput, ErrorResponse } from '~/services';
 import { LoginResponse, SignedUpResponse } from './types';
 
 export function login({ email, ...opts }: AuthSignInInput) {
@@ -13,11 +13,29 @@ export function login({ email, ...opts }: AuthSignInInput) {
     });
 }
 
+export function preRegister(email: string) {
+    return Go.post<NonNullable<ErrorResponse>>('/authaccount/pre_register', {
+        body: email.toLowerCase()
+    });
+}
+
 export function register({ email, ...opts }: AuthSignUpInput) {
-    return Go.post<NonNullable<SignedUpResponse>>('/authaccount/registration', {
+    return Go.post<NonNullable<SignedUpResponse>>('/authaccount/register', {
         body: { email: email.toLowerCase(), ...opts }
     }).then(res => {
         return handleLoginAndSignUpResponse(res);
+    });
+}
+
+export function preResetPasswrod(email: string) {
+    return Go.post<NonNullable<ErrorResponse>>('/pre_resetpassword', {
+        body: email.toLowerCase()
+    });
+}
+
+export function resetPassword(password: string) {
+    return Go.post<NonNullable<ErrorResponse>>('resetpassword', {
+        body: password
     });
 }
 

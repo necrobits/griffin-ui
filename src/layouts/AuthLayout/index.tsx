@@ -1,33 +1,35 @@
 import React from 'react';
 import { Card, Space } from '@douyinfe/semi-ui';
+import logo from 'assets/images/logo.png';
+import styles from './AuthLayout.module.scss';
 import Logo from '~/components/Logo';
-import './style.scss';
+import Title from '@douyinfe/semi-ui/lib/es/typography/title';
 
 type Props = {
     title: string;
-    hint: string;
+    hint?: string;
     body?: React.ReactNode;
     footer?: React.ReactNode;
 };
 
 export default function AuthLayout({ title, hint, body, footer }: Props) {
     return (
-        <div className='auth-layout-wrapper'>
-            <Card shadow-='always'>
-                <Space vertical className='header-wrapper' spacing={8}>
-                    <Logo className='logo' logoSize={88} />
-                    <div className='title'>{title}</div>
-                    <div className='hint'>{hint}</div>
+        <div className={styles.layoutWrapper}>
+            <Card shadows='always'>
+                <Space vertical className={styles.headerWrapper} spacing={8}>
+                    <Logo logoSize={180} />
+                    <Title className={styles.title} heading={3}>
+                        {title}
+                    </Title>
                 </Space>
-
-                <div className='body'>
-                    <Space vertical className='content-wrapper' spacing={8}>
+                <div className={styles.body}>
+                    <Space vertical className={styles.contentWrapper} spacing={8}>
                         {body}
                     </Space>
                 </div>
                 {footer && (
-                    <div className='footer'>
-                        <Space className='action-wrapper'>{footer}</Space>
+                    <div className={styles.footer}>
+                        <Space>{footer}</Space>
                     </div>
                 )}
             </Card>

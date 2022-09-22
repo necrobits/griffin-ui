@@ -1,4 +1,7 @@
+import _ from 'lodash';
 import usersJson from './users.json';
+
+console.log('Controllers');
 
 let users = usersJson;
 
@@ -95,6 +98,48 @@ export const deleteUserController = userId => req => {
     };
 };
 
+export const preRegisterController = req => {
+    const email = req.body;
+
+    const user = users.find(u => u.email === email);
+    if (user) {
+        return {
+            status: 400,
+            body: {
+                message: 'Email already exists.'
+            }
+        };
+    }
+
+    return {
+        status: 204
+    };
+};
+
+export const registerController = req => {
+    const user: any = {
+        id: users.length + 1,
+        avatar: '',
+        roles: ['User'],
+        created_at: Date().toLocaleString(),
+        last_online: Date().toLocaleString(),
+        isActive: true
+    };
+
+    Object.keys(req.body).forEach(key => (user[key] = req.body[key]));
+    users.push(user);
+
+    const { password, ...resUser } = user;
+
+    return {
+        status: 201,
+        body: {
+            user: resUser,
+            token: resUser.id
+        }
+    };
+};
+
 export const loginController = req => {
     const email = req.body.username;
     const reqPassword = req.body.password;
@@ -128,6 +173,28 @@ export const loginController = req => {
             token: resUser.id
         }
     };
+};
+
+export const preResetPassword = req => {
+    const email = req.body;
+
+    const user = users.find(u => u.email === email);
+    if (!user) {
+        return {
+            status: 400,
+            body: {
+                message: 'Email does not exist.'
+            }
+        };
+    }
+
+    return {
+        status: 204
+    };
+};
+
+export const resetPasswordController = userId => req => {
+    console.log('Something');
 };
 
 export const changePasswordController = userId => req => {

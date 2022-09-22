@@ -1,0 +1,36 @@
+.layoutWrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+
+    /* Semi-card */
+    & > div {
+        width: 100%;
+    }
+
+    .headerWrapper {
+        .title {
+            color: #777;
+        }
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .body {
+        width: 100%;
+        padding: 0.5rem;
+
+        .contentWrapper {
+            width: 100%;
+        }
+    }
+
+    .footer {
+        width: 100%;
+        padding: 0 20px 10px;
+    }
+}

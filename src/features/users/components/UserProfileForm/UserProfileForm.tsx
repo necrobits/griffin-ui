@@ -5,9 +5,9 @@ import Title from '@douyinfe/semi-ui/lib/es/typography/title';
 import { User } from '~/models';
 import styles from '../UserForm.module.scss';
 import { usePatchUser } from '../../hooks/usePatchUser';
-import UpdatedSuccessModal from '~/components/UpdatedSuccessModal';
 import ErrorMessage from '@douyinfe/semi-ui/lib/es/form/errorMessage';
 import { useResponsive } from '~/hooks/responsiveness';
+import NotificationModal from '~/components/NotificationModal';
 
 type Props = {
     user: User;
@@ -115,7 +115,7 @@ export default function UserProfileForm({ user, onSubmitted: submitted }: Props)
                     Edit
                 </Button>
             </section>
-            <UpdatedSuccessModal visible={successVisible} onClose={handleSuccessClosed} />
+            <NotificationModal text={'Successful! Profile updated.'} visible={successVisible} onClose={handleSuccessClosed} />
         </div>
     );
 }

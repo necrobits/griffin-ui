@@ -1,5 +1,18 @@
 import users from './users.json';
-import { changePasswordController, deleteUserController, getMeController, getUserController, getUsersController, loginController, patchUserController } from './controllers';
+import {
+    changePasswordController,
+    deleteUserController,
+    getMeController,
+    getUserController,
+    getUsersController,
+    loginController,
+    patchUserController,
+    preRegisterController,
+    preResetPassword,
+    registerController
+} from './controllers';
+
+console.log('Endpoints');
 
 const generateGetUserEndpoints = () => {
     let reqRes = {};
@@ -27,7 +40,6 @@ const generatePatchUserEndpoints = () => {
 
 const generateChangePasswordEndpoints = () => {
     let reqRes = {};
-
     users.forEach(user => {
         const res = {};
         const key = `PATCH /users/${user.id}/change_password`;
@@ -56,3 +68,6 @@ export const deleteUserEndpoints = generateDeleteUserEndpoints();
 export const getMeEndpoint = { 'GET /auth/me': getMeController };
 export const changePasswordEndpoints = generateChangePasswordEndpoints();
 export const loginEndpoint = { 'POST /authaccount/login': loginController };
+export const preRegisterEndpoint = { 'POST /authaccount/pre_register': preRegisterController };
+export const registerEndpoint = { 'POST /authaccount/register': registerController };
+export const preResetPwdEndpoint = { 'POST /pre_resetpassword': preResetPassword };

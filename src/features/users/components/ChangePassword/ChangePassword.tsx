@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Modal, Spin } from '@douyinfe/semi-ui';
 import Text from '@douyinfe/semi-ui/lib/es/typography/text';
 import _ from 'lodash';
 import ConfirmationPasswordForm from '~/components/ConfirmPasswordForm';
-import UpdatedSuccessModal from '~/components/UpdatedSuccessModal';
 import { useChangePassword } from '../../hooks/useChangePassword';
 import { useResponsive } from '~/hooks/responsiveness';
+import NotificationModal from '~/components/NotificationModal';
 
 export default function ChangePassword({ visible, userId, onClose: close }) {
     const { isMobile } = useResponsive();
@@ -84,7 +84,7 @@ export default function ChangePassword({ visible, userId, onClose: close }) {
                     <Form.Input type={'password'} field='oldPwd' label={'Old password'} labelPosition={isMobile ? 'top' : 'left'} />
                     <ConfirmationPasswordForm labelPassword='New password' labelConfirmPassword='Confirm new password' labelPosition={isMobile ? 'top' : 'left'} />
                 </Form>
-                <UpdatedSuccessModal visible={successVisible} onClose={handleSuccessClosed} />
+                <NotificationModal text={'Successful! Password changed.'} visible={successVisible} onClose={handleSuccessClosed} />
             </Spin>
         </Modal>
     );

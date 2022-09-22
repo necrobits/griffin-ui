@@ -47,7 +47,7 @@ export function mockApi(baseUrl: string, config: MockAPIConfig): Middleware {
                     url: req.url,
                     body: req.body
                 });
-                response = retval.body;
+                response = retval.body || null;
                 status = retval.status || status;
             }
             res.body = response;

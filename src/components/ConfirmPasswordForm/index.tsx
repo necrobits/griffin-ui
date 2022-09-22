@@ -23,20 +23,11 @@ export default function ConfirmationPasswordForm({ labelPassword, labelConfirmPa
 
     return (
         <>
-            <Form.Input
-                field='password'
-                label={labelPassword}
-                style={{ width: '100%' }}
-                trigger='blur'
-                type='password'
-                placeholder={placeholderPassword}
-                labelPosition={labelPosition}
-            />
+            <Form.Input field='password' label={labelPassword} trigger='blur' type='password' placeholder={placeholderPassword} labelPosition={labelPosition} />
 
             <Form.Input
                 field='confirmPassword'
                 label={labelConfirmPassword}
-                style={{ width: '100%' }}
                 trigger='blur'
                 type='password'
                 labelPosition={labelPosition}

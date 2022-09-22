@@ -3,7 +3,7 @@ import { Button, Modal, Typography } from '@douyinfe/semi-ui';
 
 const { Text } = Typography;
 
-export default function UpdatedSuccessModal({ visible, onClose: close }) {
+export default function NotificationModal({ text, visible, onClose: close }) {
     const handleOk = () => {
         close();
     };
@@ -22,7 +22,7 @@ export default function UpdatedSuccessModal({ visible, onClose: close }) {
                     Close
                 </Button>
             }>
-            <Text>Updated successful, your changes have been saved.</Text>
+            <Text>{text}</Text>
         </Modal>
     );
 }

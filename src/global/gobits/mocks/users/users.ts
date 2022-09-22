@@ -1,4 +1,17 @@
-import { changePasswordEndpoints, deleteUserEndpoints, getMeEndpoint, getUserEndpoints, getUsersEndpoint, loginEndpoint, patchUserEndpoints } from './endpoints';
+import {
+    changePasswordEndpoints,
+    deleteUserEndpoints,
+    getMeEndpoint,
+    getUserEndpoints,
+    getUsersEndpoint,
+    loginEndpoint,
+    patchUserEndpoints,
+    preRegisterEndpoint,
+    preResetPwdEndpoint,
+    registerEndpoint
+} from './endpoints';
+
+console.log('Users');
 
 const usersEndpoints = {
     ...getUsersEndpoint,
@@ -7,7 +20,10 @@ const usersEndpoints = {
     ...deleteUserEndpoints,
     ...getMeEndpoint,
     ...changePasswordEndpoints,
-    ...loginEndpoint
+    ...loginEndpoint,
+    ...preRegisterEndpoint,
+    ...registerEndpoint,
+    ...preResetPwdEndpoint
 };
 
 export default usersEndpoints;

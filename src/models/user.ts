@@ -6,7 +6,7 @@ export class User {
     lastName: string;
     username: string;
     email: string;
-    backupEmail: string;
+    backupEmail?: string;
     fullName?: string;
     nationality: string;
     birthDate: string;

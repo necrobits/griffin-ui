@@ -6,9 +6,9 @@ import { User } from '~/models';
 import { usePatchUser } from '../../hooks/usePatchUser';
 import ChangePassword from '../ChangePassword';
 import styles from '../UserForm.module.scss';
-import UpdatedSuccessModal from '~/components/UpdatedSuccessModal';
 import ErrorMessage from '@douyinfe/semi-ui/lib/es/form/errorMessage';
 import Label from '@douyinfe/semi-ui/lib/es/form/label';
+import NotificationModal from '~/components/NotificationModal';
 
 type Props = {
     user?: User;
@@ -98,7 +98,7 @@ export default function UserAccount({ user: propUser }: Props) {
                         Save changes
                     </Button>
                 </Form>
-                <UpdatedSuccessModal visible={successVisible} onClose={handleSuccessClosed} />
+                <NotificationModal text={'Successful! Account updated.'} visible={successVisible} onClose={handleSuccessClosed} />
             </Spin>
         </div>
     );

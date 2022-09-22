@@ -20,6 +20,8 @@ const AccountPage = lazy(() => import('~/views/AccountPage'));
 const ProfilePage = lazy(() => import('~/views/ProfilePage'));
 const AppsPage = lazy(() => import('~/views/ApplicationsPage'));
 const UserSettingsPage = lazy(() => import('~/views/UserSettingsPage'));
+const PreResetPassword = lazy(() => import('~/views/PreResetPasswordPage'));
+const ResetPassword = lazy(() => import('~/views/ResetPasswordPage'));
 
 export type IRoute = {
     exact?: boolean;
@@ -48,6 +50,14 @@ export const routes: IRoute[] = [
     {
         path: 'signup',
         component: Signup
+    },
+    {
+        path: 'reset-password',
+        component: PreResetPassword
+    },
+    {
+        path: 'reset-password/:userId',
+        component: ResetPassword
     },
     {
         path: 'example',

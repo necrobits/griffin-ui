@@ -7,11 +7,22 @@ export interface AuthSignInInput {
 }
 
 export interface AuthSignUpInput {
-    // firstName: string;
-    // lastName: string;
-    name: string;
     email: string;
     password: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthDate: string;
+    nationality: string;
+    username: string;
+    backupEmail: string;
+    phoneNumber: string;
+    address: {
+        street: string;
+        post: number;
+        city: string;
+        country: string;
+    };
 }
 
 export interface LoginResponse extends ErrorResponse {
